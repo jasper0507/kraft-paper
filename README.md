@@ -1,157 +1,69 @@
 # Anthro Paper
 
-一款温暖、克制、适合长文阅读的 Typora 浅色主题。Anthro Paper 受 Anthropic 阅读体验启发，并针对中文写作和常用 Markdown 元素进行了进一步打磨。
+模仿 [Claude](https://claude.ai) 界面风格的 Typora 主题：暖米色纸面、陶土橙强调、衬线正文，以及为中文排版做的一系列细调，提供亮暗双色。
 
-> [English version](#english-version)
+> **EN** — A warm, paper-like Typora theme inspired by the Claude (claude.ai) interface: ivory canvas, terracotta accents, serif body text, and careful CJK typography. Light and dark variants included.
 
-![Anthro Paper 在 Typora 中的主题预览](assets/anthro-paper-preview.png)
+<!-- 截图建议：亮 / 暗各一张整页视图，另配一张中文排版特写（正文 + 加粗 + 行内代码 + 表格） -->
+| Light | Dark |
+| :---: | :---: |
+| ![Anthro Paper light](assets/anthro-paper-preview.png) | ![Anthro Paper dark](screenshots/dark.png) |
 
-![Anthro Paper 的行内代码与代码块预览](assets/anthro-paper-code-preview.png)
+## 特性
+
+- **Claude 风格双主题** — 亮色对齐 claude.ai 的暖米色纸面（`#FAF9F5`）与陶土橙，暗色对齐其暖炭色模式（`#262624` / `#D97757`）；正文栏宽 768px，与 claude.ai 的阅读栏一致
+- **中文排版细调** — 宋体正文、黑体强调，避免宋体伪粗发糊；字体栈按「拉丁在前、CJK 在后」排序，中英文各用各的字形，互不接管
+- **完整 UI 覆盖** — 侧栏、Windows 标题栏与 megamenu、搜索 / 替换面板、快速打开、脚注、任务列表、`==高亮==`、目录、YAML front-matter 都做了适配
+- **导出友好** — 打印 / 导出 PDF 带标题防孤悬与表格防拆页；暗色主题导出时自动切回亮色纸面，不必先换主题
+- **易于自定义** — 所有颜色收敛在文件顶部的 `:root` 变量里，改一处即可全局生效
 
 ## 安装
 
-1. 从 [Latest Release](https://github.com/jasper0507/typora-anthro-paper/releases/latest) 下载 `anthro-paper.css`，也可以直接使用仓库中的同名文件。
-2. 打开 Typora，进入 `偏好设置 → 外观 → 打开主题文件夹`。
-3. 将 `anthro-paper.css` 复制到主题文件夹。
-4. 重启 Typora。
-5. 在主题菜单中选择 `Anthro Paper`。
+1. 下载 [`anthro-paper.css`](anthro-paper.css) 与 [`anthro-paper-dark.css`](anthro-paper-dark.css)
+2. 打开 Typora → 偏好设置（<kbd>Ctrl</kbd>+<kbd>,</kbd>）→ 外观 → **打开主题文件夹**
+3. 将两个文件复制进去，重启 Typora
+4. 在菜单栏 **主题** 中选择 *Anthro Paper* 或 *Anthro Paper Dark*
 
-## 设计目标
+## 推荐字体
 
-- 保持安静、低干扰的视觉气质，让内容成为阅读焦点。
-- 为中文长文和中英文混排提供自然、稳定的排版节奏。
-- 清楚区分正文、标题、强调内容和代码，同时避免过度装饰。
-- 统一表格、引用块、任务列表和代码等常用 Markdown 元素的视觉语言。
+主题开箱即用（英文回落 Georgia，中文回落系统字体），安装以下免费字体后观感最佳：
 
-当前仓库仅提供浅色版本。
+| 字体 | 作用 | 获取 |
+| --- | --- | --- |
+| [Source Serif 4](https://fonts.google.com/specimen/Source+Serif+4) | 英文正文衬线；导出 HTML 时会自动联网加载 | Google Fonts，免费 |
+| [思源宋体 Source Han Serif](https://github.com/adobe-fonts/source-han-serif) | 中文正文衬线；**Windows 用户强烈建议安装**，否则中文会回落到系统宋体 | Adobe，免费 |
+| [IBM Plex Sans](https://fonts.google.com/specimen/IBM+Plex+Sans) | 界面英文 | Google Fonts，免费 |
 
-## 主题特点
+代码字体默认使用系统等宽（Cascadia Code / Consolas 等），装有[更纱等宽 Sarasa Mono SC](https://github.com/be5invis/Sarasa-Gothic) 时中文注释的对齐效果更好。若本机装有 *Tiempos Text* / *Styrene*（claude.ai 同款商业字体），主题会自动优先使用。
 
-### 更清晰的正文强调
+## 自定义
 
-正文段落、列表、引用和表格中的粗体使用无衬线字体，与衬线正文形成明确对比；标题和代码中的粗体则保留各自字体，避免破坏原有层级。
+颜色都定义在各文件顶部的 `:root` 中——亮色改 `anthro-paper.css`，暗色改 `anthro-paper-dark.css`：
 
-### 更接近纸面排版的引用块
+```css
+:root {
+    --accent-color: #bc6a3a;   /* 例：把强调色换回更含蓄的琥珀橙 */
+}
+```
 
-引用块采用无底色、左侧竖线和紧凑段落间距，减少卡片感，让引用更自然地融入长文。
+```css
+#write {
+    max-width: 720px;          /* 例：收窄正文栏宽 */
+}
+```
 
-### 层级明确的表格
-
-表头、数据行和表格底部使用不同强度的中性灰分隔线，并保留舒适的单元格间距，适合参数表、对比表和技术文档。
-
-### 完整的任务列表状态
-
-任务列表使用定制复选框。完成项具有清晰的勾选状态和删除线，同时保留键盘焦点提示。
-
-## 字体说明
-
-主题字体栈优先使用 `Anthropic Serif`，但该字体是可选项，本仓库不会附带或分发任何字体文件。
-
-如果系统中没有安装该字体，Typora 会依次使用 Georgia、Times New Roman、中文宋体及其他系统后备字体。仓库不提供非官方字体下载链接。
+调试技巧：在偏好设置中开启「调试模式」，然后在正文区右键 → 检查元素，即可用 DevTools 实时调整样式，确认后再写回 CSS。
 
 ## 兼容性
 
-主题主要在 Windows 11 上测试，建议配合较新版本的 Typora 使用。其他操作系统尚未做完整验证；如果遇到显示问题，欢迎提交 Issue。
+- **Typora ≥ 1.5**。任务列表的勾选联动样式用到 `:has()`，旧版本会自动降级为 `.task-list-done` 样式
+- **Windows** 已深度适配（标题栏、megamenu、页脚）；macOS 保留基础适配，遇到问题欢迎提 issue
+- 两个主题文件的结构完全一致：修改排版结构时请同步两份，只改配色则各自修改 `:root` 即可
 
-## 后续计划
+## 声明与许可
 
-- 探索 Anthro Paper 暗色版本。
-- 探索适配 Obsidian 的主题版本。
+本项目为社区作品，与 Anthropic 无隶属或授权关系；Claude 名称及其界面设计归 Anthropic 所有，此处仅作风格致敬。仓库不包含也不分发任何商业字体文件。
 
-以上方向仍处于探索阶段，暂不承诺发布时间。
-
-## 参与贡献
-
-欢迎通过 Issues 或 Pull Requests 提交显示问题、跨平台兼容反馈和改进建议。项目不承诺固定的响应或采纳时间。
-
-## 许可证
-
-本项目采用 [MIT License](LICENSE)。许可证文件同时保留上游作者和本项目作者的版权声明。
-
-## 致谢
-
-Anthro Paper 基于 Muyiiiii 的 [Typora Claude-Like Theme](https://github.com/Muyiiiii/Typora_Claude-Like_Theme) 修改。感谢原作者以 MIT 许可证开放其工作。
-
-## 非官方声明
-
-Anthro Paper 是一个独立的社区主题，仅受 Anthropic 阅读体验启发，与 Anthropic 无关联，也未获得其授权、认可或赞助。Anthropic、Claude 及相关名称和标识归其各自权利人所有。
-
----
-
-<a id="english-version"></a>
-
-# Anthro Paper
-
-A warm, restrained light theme for long-form writing in Typora. Anthro Paper is inspired by Anthropic's reading experience and further refined for Chinese writing and commonly used Markdown elements.
-
-![Anthro Paper theme preview in Typora](assets/anthro-paper-preview.png)
-
-![Inline code and fenced code blocks in Anthro Paper](assets/anthro-paper-code-preview.png)
-
-## Installation
-
-1. Download `anthro-paper.css` from the [Latest Release](https://github.com/jasper0507/typora-anthro-paper/releases/latest), or use the file with the same name from this repository.
-2. Open Typora and go to `Preferences → Appearance → Open Theme Folder`.
-3. Copy `anthro-paper.css` into the theme folder.
-4. Restart Typora.
-5. Select `Anthro Paper` from the Theme menu.
-
-## Design Goals
-
-- Keep the interface calm and low-noise so the content remains the focus.
-- Provide a natural, stable reading rhythm for long Chinese documents and mixed Chinese-English text.
-- Distinguish body text, headings, emphasis, and code without excessive decoration.
-- Give tables, blockquotes, task lists, and code a consistent visual language.
-
-The repository currently provides a light theme only.
-
-## Highlights
-
-### Clearer emphasis in body content
-
-Bold text in paragraphs, lists, blockquotes, and tables uses a sans-serif stack to create clear contrast with the serif body text. Bold text in headings and code keeps the surrounding typeface so that their hierarchy remains intact.
-
-### Paper-like blockquotes
-
-Blockquotes use a transparent background, a simple left rule, and compact paragraph spacing. This reduces the card-like appearance and lets quotations sit naturally within long-form writing.
-
-### Tables with a deliberate hierarchy
-
-Table headers, body rows, and the bottom edge use neutral dividers of different strengths, while comfortable cell spacing keeps comparison tables, parameter sheets, and technical documents easy to scan.
-
-### Complete task-list states
-
-Task lists use custom checkboxes. Completed items receive a clear checked state and strikethrough, while keyboard focus remains visible.
-
-## Fonts
-
-The theme's font stack prefers `Anthropic Serif`, but the font is optional. This repository does not include or distribute any font files.
-
-If the font is not installed, Typora falls back to Georgia, Times New Roman, Chinese Song-style fonts, and other system fonts. No unofficial font download links are provided.
-
-## Compatibility
-
-The theme is primarily tested on Windows 11 and is recommended for use with a recent version of Typora. Other operating systems have not been fully verified. If you encounter a rendering issue, please open an Issue.
-
-## Roadmap
-
-- Explore a dark variant of Anthro Paper.
-- Explore an Obsidian version of the theme.
-
-These items are exploratory and do not have a committed release schedule.
-
-## Contributing
-
-Issues and Pull Requests for rendering problems, cross-platform compatibility feedback, and improvement ideas are welcome. The project does not promise a fixed response or acceptance timeline.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE). The license file retains the copyright notices of both the upstream author and this project's author.
-
-## Credits
-
-Anthro Paper is based on Muyiiiii's [Typora Claude-Like Theme](https://github.com/Muyiiiii/Typora_Claude-Like_Theme). Thanks to the original author for making the work available under the MIT License.
-
-## Disclaimer
+MIT License
 
 Anthro Paper is an independent community theme inspired only by Anthropic's reading experience. It is not affiliated with, endorsed by, or sponsored by Anthropic. Anthropic, Claude, and related names and marks belong to their respective owners.
