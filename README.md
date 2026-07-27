@@ -1,69 +1,224 @@
-# Anthro Paper
+# Kraft Paper — Typora 主题（明 / 暗）
 
-模仿 [Claude](https://claude.ai) 界面风格的 Typora 主题：暖米色纸面、陶土橙强调、衬线正文，以及为中文排版做的一系列细调，提供亮暗双色。
+> A warm, paper-textured Typora theme (light + dark), inspired by the claude.ai design language.
 
-> **EN** — A warm, paper-like Typora theme inspired by the Claude (claude.ai) interface: ivory canvas, terracotta accents, serif body text, and careful CJK typography. Light and dark variants included.
+[![License](https://img.shields.io/badge/License-MIT-d97757)](./LICENSE)
 
-<!-- 截图建议：亮 / 暗各一张整页视图，另配一张中文排版特写（正文 + 加粗 + 行内代码 + 表格） -->
-| Light | Dark |
-| :---: | :---: |
-| ![Anthro Paper light](assets/anthro-paper-preview.png) | ![Anthro Paper dark](screenshots/dark.png) |
+一对以 **claude.ai 界面设计语言**为蓝本的 Typora 主题：暖米色纸感的浅色 `kraft-paper`，与暖灰深底的深色 `kraft-paper-dark`。配色对齐官网暖纸体系（陶土橙 + 暖灰中性色），排版为**正文衬线 + 界面无衬线**；中文遵循「宋体正文，黑体强调」。明暗两文件结构规则对称，差异集中在 `:root` 变量与暗色专属段。
 
-## 特性
+- 适配环境：**Typora ≥ 1.5**（建议较新版本）；主要在 **Windows 11** 上验证
+- 正文栏宽固定 **768px**（约 48rem，对齐 claude.ai 聊天栏 measure），不随大屏无限加宽
+- 中英混排：正文走 Tiempos / Source Serif / 宋体系；界面与强调字族按拉丁 / CJK 分别回退
+- 内容样式限定在 `#write`，颜色一律走变量，便于成对维护明暗主题
 
-- **Claude 风格双主题** — 亮色对齐 claude.ai 的暖米色纸面（`#FAF9F5`）与陶土橙，暗色对齐其暖炭色模式（`#262624` / `#D97757`）；正文栏宽 768px，与 claude.ai 的阅读栏一致
-- **中文排版细调** — 宋体正文、黑体强调，避免宋体伪粗发糊；字体栈按「拉丁在前、CJK 在后」排序，中英文各用各的字形，互不接管
-- **完整 UI 覆盖** — 侧栏、Windows 标题栏与 megamenu、搜索 / 替换面板、快速打开、脚注、任务列表、`==高亮==`、目录、YAML front-matter 都做了适配
-- **导出友好** — 打印 / 导出 PDF 带标题防孤悬与表格防拆页；暗色主题导出时自动切回亮色纸面，不必先换主题
-- **易于自定义** — 所有颜色收敛在文件顶部的 `:root` 变量里，改一处即可全局生效
+---
 
-## 安装
+## 预览
 
-1. 下载 [`anthro-paper.css`](anthro-paper.css) 与 [`anthro-paper-dark.css`](anthro-paper-dark.css)
-2. 打开 Typora → 偏好设置（<kbd>Ctrl</kbd>+<kbd>,</kbd>）→ 外观 → **打开主题文件夹**
-3. 将两个文件复制进去，重启 Typora
-4. 在菜单栏 **主题** 中选择 *Anthro Paper* 或 *Anthro Paper Dark*
+**浅色 · Kraft Paper**
 
-## 推荐字体
+![Kraft Paper 浅色预览](screenshots/light.png)
 
-主题开箱即用（英文回落 Georgia，中文回落系统字体），安装以下免费字体后观感最佳：
+**深色 · Kraft Paper Dark**
 
-| 字体 | 作用 | 获取 |
+![Kraft Paper 深色预览](screenshots/dark.png)
+
+> 上图为主题渲染效果预览；实际以 Typora 中体验为准。仓库另附 [`examples/showcase.md`](examples/showcase.md)，便于明暗对照回归。
+
+---
+
+## 一、安装
+
+### 文件构成
+
+| 文件 | 说明 |
+| --- | --- |
+| `kraft-paper.css` | 浅色主题（主文件，单文件自包含） |
+| `kraft-paper-dark.css` | 深色主题（结构与浅色对齐，含暗色专属规则） |
+
+### 主题目录
+
+把需要的 `.css` 复制到 Typora 的主题目录：
+
+| 平台 | 路径 |
+| --- | --- |
+| Windows | `%APPDATA%\Typora\themes\` |
+| macOS | `~/Library/Application Support/abnerworks.Typora/themes/` |
+| Linux | `~/.config/Typora/themes/` |
+
+> 在 Typora → 文件 → 偏好设置 → 外观 → **打开主题文件夹**，可直接跳到该目录。
+
+也可从 [Latest Release](https://github.com/jasper0507/kraft-paper/releases/latest) 下载，或直接使用本仓库中的同名文件。
+
+### 启用 / 更新
+
+- **启用**：Typora → 文件 → 偏好设置 → 外观 → 主题，选择 `Kraft Paper` 或 `Kraft Paper Dark`
+- **修改 CSS 后生效**：切走主题再切回，或重启 Typora（Typora 不热载主题）
+- **改样式前先备份**：编辑前复制一份 `.css`（或用 git 版本管理），便于回滚
+- 明暗可同时安装，按场景切换
+
+> **Tip**  
+> 任务列表勾选态使用了 `:has()`；Typora 1.5 以下由 `.task-list-done` 规则兜底，建议仍使用 1.5+。
+
+---
+
+## 二、设计语言
+
+### 色板
+
+核心原则：陶土橙做链接、光标、勾选、焦点与侧栏激活等**强调交互**；正文 / 标题走独立暖色文本阶，边线统一暖灰，避免中性灰在米色纸面上发脏。
+
+| 角色 | 浅色 | 深色 |
 | --- | --- | --- |
-| [Source Serif 4](https://fonts.google.com/specimen/Source+Serif+4) | 英文正文衬线；导出 HTML 时会自动联网加载 | Google Fonts，免费 |
-| [思源宋体 Source Han Serif](https://github.com/adobe-fonts/source-han-serif) | 中文正文衬线；**Windows 用户强烈建议安装**，否则中文会回落到系统宋体 | Adobe，免费 |
-| [IBM Plex Sans](https://fonts.google.com/specimen/IBM+Plex+Sans) | 界面英文 | Google Fonts，免费 |
+| 页面底色 | `#faf9f5` 暖纸 | `#262624` 暖深 |
+| 侧栏底 | `#f0eee6` | `#201F1C` |
+| 正文 | `#2b2621` | `#E8E6DE` |
+| 标题 | `#1c1815` | `#F5F3EC` |
+| 次级文本 | `#72695e` | `#A29A8D` |
+| 强调色 `--accent-color` | `#c15f3c` | `#D97757` |
+| 强调悬停 | `#a14d2e` | `#E69373` |
+| 边线 | `#ddd5ca` | `#3E3B36` |
+| 高亮 `==mark==` | `#f2e3c2` | `#5C4726` |
+| 行内代码字色 | `#a34a3a` | `#E39A82` |
 
-代码字体默认使用系统等宽（Cascadia Code / Consolas 等），装有[更纱等宽 Sarasa Mono SC](https://github.com/be5invis/Sarasa-Gothic) 时中文注释的对齐效果更好。若本机装有 *Tiempos Text* / *Styrene*（claude.ai 同款商业字体），主题会自动优先使用。
+### 字体栈
 
-## 自定义
+| 用途 | 栈 |
+| --- | --- |
+| 正文 `--font-body` | Tiempos Text → Source Serif 4 → Georgia → 宋体 / 思源宋体 / Noto Serif CJK |
+| 界面 `--font-ui` | Styrene B → IBM Plex Sans → Segoe UI → 苹方 / 微软雅黑 等 |
+| 强调 `--font-strong` | 拉丁走衬线粗体；中文落到黑体（避免宋体伪粗发糊） |
+| 等宽 `--font-mono` | ui-monospace → Cascadia Code → Consolas → SF Mono → 更纱黑体 Mono SC |
 
-颜色都定义在各文件顶部的 `:root` 中——亮色改 `anthro-paper.css`，暗色改 `anthro-paper-dark.css`：
+说明：
 
-```css
-:root {
-    --accent-color: #bc6a3a;   /* 例：把强调色换回更含蓄的琥珀橙 */
-}
-```
+- 品牌字体（Tiempos、Styrene 等）为**可选项**，本仓库不附带或分发字体文件；未安装时自动回落到系统字体
+- 界面栈把**拉丁字体放在 CJK 前面**，避免中文字体自带拉丁字形抢占英文渲染
+- 导出 HTML 时，主题通过 `@include-when-export` 可加载 `Source Serif 4` 与 `IBM Plex Sans`（仅导出链路；日常编辑不依赖网络）
+- Windows 建议安装**思源宋体**，中文衬线观感更稳
 
-```css
-#write {
-    max-width: 720px;          /* 例：收窄正文栏宽 */
-}
-```
+### 版式
 
-调试技巧：在偏好设置中开启「调试模式」，然后在正文区右键 → 检查元素，即可用 DevTools 实时调整样式，确认后再写回 CSS。
+- 正文列宽 **768px** 居中，行高 **1.62**；窄窗（≤768px）收紧内边距
+- 结构约定：`body` 只承载界面字体；一切内容排版规则限定在 `#write`
+- 文档首个 h1 / h2 顶距收窄，避免文首大块空白
+- 长 URL / 长行内代码 `overflow-wrap: break-word`，不撑破栏宽
 
-## 兼容性
+---
 
-- **Typora ≥ 1.5**。任务列表的勾选联动样式用到 `:has()`，旧版本会自动降级为 `.task-list-done` 样式
-- **Windows** 已深度适配（标题栏、megamenu、页脚）；macOS 保留基础适配，遇到问题欢迎提 issue
-- 两个主题文件的结构完全一致：修改排版结构时请同步两份，只改配色则各自修改 `:root` 即可
+## 三、内容渲染
 
-## 声明与许可
+### 标题
 
-本项目为社区作品，与 Anthropic 无隶属或授权关系；Claude 名称及其界面设计归 Anthropic 所有，此处仅作风格致敬。仓库不包含也不分发任何商业字体文件。
+- h1–h6 使用正文字族 + 半粗；h1 `1.84em`，向下递减；h6 弱化为次级色，可作「眉题」
+- 标题内联代码 `font-size: inherit`，不缩放破坏层级
+- 标题 / 代码内的粗体**保持自身字体**，避免强调字族串入
 
-MIT License
+### 强调与列表
 
-Anthro Paper is an independent community theme inspired only by Anthropic's reading experience. It is not affiliated with, endorsed by, or sponsored by Anthropic. Anthropic, Claude, and related names and marks belong to their respective owners.
+- 正文 `**粗体**`：拉丁衬线粗体 + 中文黑体，颜色贴近标题色
+- 无序 / 有序列表 marker 使用次级色；嵌套列表间距收紧
+- **任务列表**：定制复选框；勾选为陶土橙；完成项删除线 + 弱化；保留 `:focus-visible` 焦点环
+
+### 引用块
+
+- **无底色** + 3px 左侧竖线 + 紧凑段落间距，减少卡片感，贴近纸面长文
+- 嵌套引用继续缩进，不额外堆阴影
+
+### 表格
+
+- 表头 / 行间 / 底边使用**分级暖灰**分隔线；单元格留白偏松，适合参数表与对比表
+- 行悬停淡橙底；样式**仅作用于 `#write` 内表格**，避免污染 megamenu 等界面面板
+- 表格悬浮编辑工具（九宫格 / 对齐条）单独还原布局，避免误吃内容表样式
+
+### 行内代码 / 键帽 / 高亮
+
+- `` `code` ``：小圆角暖底 + 细边框 + 红棕字；关闭编程连字（`!=` 不会变成 ≠）
+- `<kbd>`：键帽样式（加厚底边）
+- `==高亮==`：manilla / 暗琥珀底，替代刺眼默认黄
+
+### 代码围栏
+
+- 圆角卡片 + 细边框；关键字紫 / 字符串绿 / 数字橙 / 符号蓝 / 注释灰，明暗两套独立调色
+- 语言标签与行号走 muted 色；围栏内不继承行内代码的边框与加粗
+
+### 源代码模式
+
+- 与正文同底色；等宽栈 + 关闭连字
+- 深色主题额外重映射标题 / 注释 / 字符串 / 链接 / 关键字等 token，避免默认亮色语法在深底上不可读
+
+### 其他
+
+- **脚注**：上标走强调色；定义区名称 / 内容分层着色
+- **YAML front-matter / TOC / 数学**：独立底色块，与正文纸面区分但不抢戏
+- 水平线、图片 `max-width: 100%` 等常规块级元素均已纳入节奏
+
+---
+
+## 四、编辑器体验
+
+- **光标**（正文）统一陶土强调色
+- **选区**暖米色；`Ctrl+F` 查找命中为暖琥珀（深色为更深琥珀），替换默认刺眼亮黄
+- **专注模式**：非焦点文本走 `--blur-text-color`，与主题弱化灰一致
+- **侧栏**：文件树 / 列表激活项 = 淡橙底 + 陶土左边线；悬停同色系
+- **快速打开 / 搜索替换 / 菜单弹窗**：面板底、边框、悬停与按钮均主题化
+- **Windows**：标题栏、页脚、megamenu 做了皮肤覆盖；图标字体单独保护，避免被界面字族冲掉
+- 深色主题：**滚动条**单独降对比，避免浅色拇指条在深底上刺眼
+
+---
+
+## 五、导出与打印
+
+- `@media print`：正文字号收至 13px；表格 / 代码 / 引用 / 图片避免跨页截断；标题后不孤立分页
+- 打印色保留（`print-color-adjust: exact`），行内代码与高亮在纸面上仍可辨
+- **深色主题**在打印 / 导出 PDF 时**自动切回亮色纸面**，避免深底白字直接上纸
+- 导出 HTML 时可按需加载网络字体；日常编辑不依赖在线资源
+
+---
+
+## 六、自定义入口（改 `:root` 即可）
+
+| 想改什么 | 动哪个变量 / 位置 |
+| --- | --- |
+| 换强调色 | `--accent-color` / `--accent-hover-color` / `--focus-ring-color` |
+| 换字体 | `--font-body` / `--font-ui` / `--font-strong` / `--font-mono` |
+| 列宽 | `#write { max-width }`（默认 768px） |
+| 代码高亮 | `--code-keyword/string/number/symbol/muted-color` |
+| 表格 / 引用 | `--table-*` / `--quote-*` |
+| 侧栏激活 | `--active-file-bg/border/text-color` |
+| 高亮底 | `--mark-bg-color` |
+
+明暗两文件请**成对修改**：结构规则应对齐，差异尽量只留在 `:root` 与暗色专属段。
+
+---
+
+## 七、自检建议
+
+用 [`examples/showcase.md`](examples/showcase.md)（或任意含标题 / 列表 / 任务列表 / 表格 / 代码块 / 引用 / 高亮 / 脚注的长文），在明暗两主题下对照：
+
+1. 正文衬线与粗体强调是否分层清晰（中文粗体不发糊）
+2. 表格边线层级、行悬停、表格编辑浮层是否正常
+3. 任务列表勾选对比度、完成态删除线
+4. 深色下源码模式 token 是否可读
+5. 深色打印 / 导出 PDF 是否回到亮色纸面
+6. Windows 下侧栏图标、megamenu 是否被字族污染
+
+---
+
+## 八、致谢
+
+本项目基于 Muyiiiii 的 [Typora Claude-Like Theme](https://github.com/Muyiiiii/Typora_Claude-Like_Theme) 修改。感谢原作者以 MIT 许可证开放其工作。
+
+README 结构参考了 [Clay](https://github.com/chaun-yi7/Clay) 的组织方式。
+
+---
+
+## License
+
+[MIT](./LICENSE)
+
+本主题在视觉上参考了 [claude.ai](https://claude.ai) 的公开设计语言（配色 / 版式），与 Anthropic 无隶属或背书关系。“Claude” 为 Anthropic 的商标，此处仅作事实性引用。
+
+---
+
+*主题文件：`kraft-paper.css` 与 `kraft-paper-dark.css`（放入 Typora 主题目录） · Typora ≥ 1.5 · 主要验证环境 Windows 11*
