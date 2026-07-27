@@ -11,6 +11,7 @@
 | | 下载 |
 | --- | --- |
 | **Latest Release** | [打开发布页](https://github.com/jasper0507/kraft-paper/releases/latest) |
+| **一键包**（浅色 + 暗色） | [下载 ZIP](https://github.com/jasper0507/kraft-paper/releases/latest/download/kraft-paper-v2.0.0.zip) |
 | 浅色 `kraft-paper.css` | [直接下载](https://github.com/jasper0507/kraft-paper/releases/latest/download/kraft-paper.css) |
 | 深色 `kraft-paper-dark.css` | [直接下载](https://github.com/jasper0507/kraft-paper/releases/latest/download/kraft-paper-dark.css) |
 
