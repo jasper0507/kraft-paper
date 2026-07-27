@@ -2,7 +2,21 @@
 
 > A warm, paper-textured Typora theme (light + dark), inspired by the claude.ai design language.
 
+[![Latest Release](https://img.shields.io/github/v/release/jasper0507/kraft-paper?color=d97757&label=release)](https://github.com/jasper0507/kraft-paper/releases/latest)
 [![License](https://img.shields.io/badge/License-MIT-d97757)](./LICENSE)
+[![Typora](https://img.shields.io/badge/Typora-%E2%89%A5%201.5-c15f3c)](https://typora.io/)
+
+### Download
+
+| | 下载 |
+| --- | --- |
+| **Latest Release** | [打开发布页](https://github.com/jasper0507/kraft-paper/releases/latest) |
+| 浅色 `kraft-paper.css` | [直接下载](https://github.com/jasper0507/kraft-paper/releases/latest/download/kraft-paper.css) |
+| 深色 `kraft-paper-dark.css` | [直接下载](https://github.com/jasper0507/kraft-paper/releases/latest/download/kraft-paper-dark.css) |
+
+> 下载后复制到 Typora 主题文件夹，重启并在主题菜单中选择对应名称。详细步骤见下方 [安装](#一安装)。
+
+---
 
 一对以 **claude.ai 界面设计语言**为蓝本的 Typora 主题：暖米色纸感的浅色 `kraft-paper`，与暖灰深底的深色 `kraft-paper-dark`。配色对齐官网暖纸体系（陶土橙 + 暖灰中性色），排版为**正文衬线 + 界面无衬线**；中文遵循「宋体正文，黑体强调」。明暗两文件结构规则对称，差异集中在 `:root` 变量与暗色专属段。
 
