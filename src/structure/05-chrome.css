@@ -1,0 +1,198 @@
+/* ============================================================
+ * 侧栏
+ * body 已是无衬线, 不再需要逐节点的 font-family !important 补丁;
+ * 若个别节点仍被内建样式覆盖, 再针对性加回。
+ * ============================================================ */
+
+#typora-sidebar {
+    background-color: var(--side-bar-bg-color);
+    font-family: var(--font-ui);
+    color: var(--text-color);
+}
+
+.mac-seamless-mode #typora-sidebar {
+    background-color: var(--side-bar-bg-color);
+}
+
+.sidebar-tabs {
+    border-bottom: none;
+}
+
+.file-list-item-summary,
+.file-list-item-parent-loc,
+.file-node-icon,
+.file-node-open-state,
+.outline-expander {
+    color: var(--control-text-color);
+}
+
+.file-list-item-file-ext-part,
+.file-node-title-ext-part {
+    opacity: 1;
+    color: var(--text-color);
+}
+
+.outline-item:hover,
+.file-list-item:hover,
+.ty-side-sort-btn.active,
+.outline-expander:hover {
+    background-color: var(--item-hover-bg-color);
+}
+
+.file-list-item.active,
+.file-tree-node.active > .file-node-background,
+.outline-item.active {
+    background-color: var(--active-file-bg-color);
+    border-left: 0;
+    box-shadow: inset 3px 0 0 var(--active-file-border-color);
+}
+
+.file-list-item.active,
+.file-tree-node.active > .file-node-content,
+.outline-item.active {
+    color: var(--active-file-text-color);
+}
+
+.file-list-item.active .file-list-item-file-ext-part,
+.file-tree-node.active .file-node-title-ext-part {
+    color: var(--active-file-text-color);
+}
+
+.file-node-content:hover .file-node-icon,
+.file-node-content:hover .file-node-open-state {
+    visibility: visible;
+}
+
+/* ============================================================
+ * Quick open (新版 DOM 用 class, 旧版用 id, 两者都写)
+ * ============================================================ */
+
+#typora-quick-open {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--panel-bg-color);
+    box-shadow: var(--shadow-panel);
+}
+
+#typora-quick-open input,
+#typora-quick-open-input,
+#typora-quick-open-input input {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+#typora-quick-open-item,
+.typora-quick-open-item {
+    background-color: transparent;
+    border: 0; /* 弃用 github 主题遗留的四色斜面边框 */
+}
+
+#typora-quick-open-item:hover,
+.typora-quick-open-item:hover {
+    background-color: var(--item-hover-bg-color);
+}
+
+#typora-quick-open-item.active,
+.typora-quick-open-item.active {
+    background-color: var(--active-file-bg-color);
+    color: var(--heading-color);
+}
+
+/* ============================================================
+ * 搜索 / 替换面板
+ * ============================================================ */
+
+#md-searchpanel {
+    background-color: var(--window-bg-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+#md-searchpanel input {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-color);
+}
+
+#md-searchpanel input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px var(--focus-ring-color);
+}
+
+#md-searchpanel .searchpanel-search-option-btn {
+    border-radius: 4px;
+    color: var(--control-text-color);
+}
+
+#md-searchpanel .searchpanel-search-option-btn.active {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+/* ============================================================
+ * 菜单 / 弹窗 / 按钮
+ * ============================================================ */
+
+header,
+.context-menu,
+.megamenu-content,
+footer {
+    font-family: var(--font-ui);
+}
+
+.dropdown-menu {
+    background-color: var(--panel-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: var(--shadow-menu);
+}
+
+.dropdown-menu .divider {
+    border-color: var(--border-color);
+    opacity: 0.6;
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > .active > a {
+    background-color: var(--item-hover-bg-color);
+    color: var(--heading-color);
+}
+
+.modal-content {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+}
+
+.btn-primary {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: var(--on-accent-color);
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: var(--accent-hover-color);
+    border-color: var(--accent-hover-color);
+}
+
+#md-notification .btn {
+    border: 0;
+}
+
+.menu-item-container a.menu-style-btn {
+    background-color: var(--panel-bg-color);
+    border: 1px solid var(--border-color);
+}
+
+.ty-preferences .window-content {
+    background-color: var(--window-bg-color);
+}
+
+.ty-preferences .nav-group-item.active {
+    color: var(--on-accent-color);
+    background: var(--accent-color);
+}

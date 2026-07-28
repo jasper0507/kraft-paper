@@ -1,0 +1,89 @@
+:root {
+    /* ---- 表面 ---- */
+    --bg-color: #262624; /* 主纸面 (claude.ai 暗色同源) */
+    --side-bar-bg-color: #201F1C; /* 侧栏, 比纸面再深半档 */
+    --window-bg-color: #2C2B28; /* 菜单 / 偏好设置等窗口面 */
+    --panel-bg-color: #32312D; /* 浮层: 暗色下靠提亮表达层级 */
+    --item-hover-bg-color: rgba(217, 119, 87, 0.1);
+    --select-text-bg-color: #53402F;
+
+    /* ---- 文本 ---- */
+    --text-color: #E8E6DE;
+    --heading-color: #F5F3EC;
+    --control-text-color: #A29A8D; /* 次级 UI 文本 / 弱化内容 */
+    --quote-text-color: #B5AC9F;
+
+    /* ---- 强调色: 暗色下用更亮的陶土橙 (claude.ai 的 #D97757) ---- */
+    --accent-color: #D97757;
+    --accent-hover-color: #E69373; /* 暗色悬停向更亮走 */
+    --focus-ring-color: rgba(217, 119, 87, 0.55);
+    --on-accent-color: #262624; /* 强调底上的前景字 / 勾选对勾 */
+
+    /* ---- 边线 (统一暖灰) ---- */
+    --border-color: #3E3B36;
+    --quote-border-color: #45413A;
+    --table-border-strong-color: #8C8478;
+    --table-row-border-color: #4A463F;
+    --table-border-soft-color: #3A3733;
+    --table-hover-color: rgba(217, 119, 87, 0.07);
+
+    /* ---- 块级底色 ---- */
+    --quote-bg-color: #2E2C28; /* TOC 等容器 */
+    --mark-bg-color: #5C4726; /* ==高亮== , 暗琥珀 */
+    --meta-block-bg-color: #2C2A25; /* YAML front-matter */
+    --math-midline-bg-color: #33302A;
+
+    /* ---- 代码 (语法色整体提亮以保证暗底可读) ---- */
+    --code-bg-color: #2D2C29;
+    --code-text-color: #E8E6DE;
+    --code-border-color: #3E3B36;
+    --code-muted-color: #978F82; /* 注释 / 行号 / 语言标签 */
+    --code-keyword-color: #AF95DE;
+    --code-string-color: #9CBD84;
+    --code-number-color: #E0A175;
+    --code-symbol-color: #85AEDC;
+    --inline-code-color: #E39A82;
+    --inline-code-bg-color: #363430;
+    --inline-code-border-color: #47443E;
+
+    /* ---- 文件列表选中态 (Typora 内建变量) ---- */
+    --active-file-bg-color: rgba(217, 119, 87, 0.16);
+    --active-file-text-color: #F5F3EC;
+    --active-file-border-color: #D97757;
+
+    /* ---- Typora 内建变量: 暗色下必须显式给值, 否则沿用面向亮底的默认值 ---- */
+    --blur-text-color: rgba(232, 230, 222, 0.38); /* 聚焦模式下被虚化的文本 */
+    --md-char-color: #7A7468; /* Markdown 语法符号 (如 **) */
+    --meta-content-color: #A29A8D; /* 链接地址等元信息 */
+    --rawblock-edit-panel-bd: #33302A; /* HTML 原始块编辑面板 */
+    --search-select-bg-color: #7A5A24; /* 文内查找命中项 */
+    --search-select-text-color: #F5F3EC;
+
+    /* ---- 阴影 / 勾选 (闭合规则体硬编码 seam) ---- */
+    --shadow-tooltip: 0 10px 24px rgba(0, 0, 0, 0.35);
+    --shadow-panel: 0 12px 32px rgba(0, 0, 0, 0.5);
+    --shadow-menu: 0 8px 24px rgba(0, 0, 0, 0.45);
+    --checkbox-check-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 12 12%27%3E%3Cpath fill=%27none%27 stroke=%27%23262624%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 d=%27M2.5 6.2 5 8.5 9.5 3.5%27/%3E%3C/svg%3E");
+    --scrollbar-thumb-color: rgba(232, 230, 222, 0.14);
+    --scrollbar-thumb-hover-color: rgba(232, 230, 222, 0.26);
+
+    /* ---- 字体 (与亮色版一致; 真源在 tokens 两文件, 构建不复制结构) ----
+     * 正文: Tiempos Text → Source Serif 4 → Georgia → 中文衬线
+     * 界面: 拉丁在前, CJK 在后
+     * 强调: 拉丁衬线粗体, 中文黑体
+     */
+    --font-body:
+        "Tiempos Text", "Source Serif 4", Georgia, "Times New Roman",
+        "Songti SC", "Source Han Serif SC", "Noto Serif CJK SC", serif;
+    --font-ui:
+        "Styrene B LC", "Styrene B", "IBM Plex Sans", -apple-system, "Segoe UI",
+        "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC",
+        "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+    --font-strong:
+        "Tiempos Text", "Source Serif 4", Georgia, "PingFang SC",
+        "Hiragino Sans GB", "Source Han Sans SC", "Noto Sans CJK SC",
+        "Microsoft YaHei", sans-serif;
+    --font-mono:
+        ui-monospace, "Cascadia Code", Consolas, "SF Mono", Menlo, Monaco,
+        "Sarasa Mono SC", monospace;
+}

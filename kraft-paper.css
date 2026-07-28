@@ -10,7 +10,8 @@
  *
  * 结构约定
  *  - body 只承载界面字体 (--font-ui); 一切内容排版规则限定在 #write 内
- *  - 颜色一律走 :root 变量 (含少量暖调透明色), 便于后续派生暗色主题
+ *  - 颜色 / 阴影 / 勾选图一律走 :root 变量
+ *  - 本文件由 src/ 构建生成; 请改源码后运行 npm run build
  *
  * 最低版本: Typora >= 1.5
  *  - 任务列表勾选态用到 :has(), 旧版由 .task-list-done 规则兜底
@@ -35,6 +36,7 @@
     --accent-color: #c15f3c;
     --accent-hover-color: #a14d2e;
     --focus-ring-color: rgba(193, 95, 60, 0.45);
+    --on-accent-color: #faf9f5; /* 强调底上的前景字 / 勾选对勾 */
 
     /* ---- 边线 (统一暖灰, 避免中性灰在米色纸面上发脏) ---- */
     --border-color: #ddd5ca;
@@ -75,6 +77,14 @@
     --rawblock-edit-panel-bd: #f4efe7; /* HTML 原始块编辑面板 */
     --search-select-bg-color: #f3d98f; /* 文内查找命中项, 暖琥珀替换默认亮黄 */
     --search-select-text-color: #1c1815;
+
+    /* ---- 阴影 / 勾选 (闭合规则体硬编码 seam) ---- */
+    --shadow-tooltip: 0 10px 24px rgba(73, 49, 34, 0.08);
+    --shadow-panel: 0 12px 32px rgba(43, 38, 33, 0.12);
+    --shadow-menu: 0 8px 24px rgba(43, 38, 33, 0.1);
+    --checkbox-check-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 12 12%27%3E%3Cpath fill=%27none%27 stroke=%27%23faf9f5%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 d=%27M2.5 6.2 5 8.5 9.5 3.5%27/%3E%3C/svg%3E");
+    --scrollbar-thumb-color: rgba(43, 38, 33, 0.18);
+    --scrollbar-thumb-hover-color: rgba(43, 38, 33, 0.32);
 
     /* ---- 字体 ----
      * 正文: Tiempos Text (claude.ai 同款, 本机装了才生效)
@@ -236,7 +246,8 @@ body {
 #write ul,
 #write ol,
 #write dl,
-#write table {
+#write .md-table-fig > table:not(.md-grid-board),
+#write > table:not(.md-grid-board) {
     margin: 0.78em 0;
 }
 
@@ -329,10 +340,13 @@ body {
 }
 
 /* ============================================================
- * 表格 (限定在 #write 内, 不再污染 megamenu 面板)
+ * 表格 (仅内容表路径)
+ * seam: .md-table-fig / #write 直接子表; 显式 :not(.md-grid-board)
+ * 不匹配 .md-table-edit / .md-grid-board / .md-table-resize 内的表
  * ============================================================ */
 
-#write table {
+#write .md-table-fig > table:not(.md-grid-board),
+#write > table:not(.md-grid-board) {
     padding: 0;
     width: 100%;
     border-collapse: collapse;
@@ -342,22 +356,26 @@ body {
     word-break: initial;
 }
 
-#write table tr {
+#write .md-table-fig > table:not(.md-grid-board) tr,
+#write > table:not(.md-grid-board) tr {
     border: 0;
     margin: 0;
     padding: 0;
     background-color: transparent;
 }
 
-#write table thead tr {
+#write .md-table-fig > table:not(.md-grid-board) thead tr,
+#write > table:not(.md-grid-board) thead tr {
     border-bottom: 1px solid var(--table-border-strong-color);
 }
 
-#write table tbody tr {
+#write .md-table-fig > table:not(.md-grid-board) tbody tr,
+#write > table:not(.md-grid-board) tbody tr {
     border-bottom: 1px solid var(--table-row-border-color);
 }
 
-#write table th {
+#write .md-table-fig > table:not(.md-grid-board) th,
+#write > table:not(.md-grid-board) th {
     font-family: var(--font-body);
     font-weight: 600;
     border: 0;
@@ -371,7 +389,8 @@ body {
     font-variant-numeric: lining-nums tabular-nums;
 }
 
-#write table td {
+#write .md-table-fig > table:not(.md-grid-board) td,
+#write > table:not(.md-grid-board) td {
     border: 0;
     margin: 0;
     padding: 12px 18px 12px 0;
@@ -383,60 +402,34 @@ body {
     font-variant-numeric: lining-nums tabular-nums;
 }
 
-#write table th:first-child,
-#write table td:first-child {
+#write .md-table-fig > table:not(.md-grid-board) th:first-child,
+#write .md-table-fig > table:not(.md-grid-board) td:first-child,
+#write > table:not(.md-grid-board) th:first-child,
+#write > table:not(.md-grid-board) td:first-child {
     color: var(--heading-color);
 }
 
-#write table th:last-child,
-#write table td:last-child {
+#write .md-table-fig > table:not(.md-grid-board) th:last-child,
+#write .md-table-fig > table:not(.md-grid-board) td:last-child,
+#write > table:not(.md-grid-board) th:last-child,
+#write > table:not(.md-grid-board) td:last-child {
     padding-right: 0;
 }
 
-#write table tbody tr:last-child {
+#write .md-table-fig > table:not(.md-grid-board) tbody tr:last-child,
+#write > table:not(.md-grid-board) tbody tr:last-child {
     border-bottom: 0;
 }
 
-#write table tbody tr:hover td {
+#write .md-table-fig > table:not(.md-grid-board) tbody tr:hover td,
+#write > table:not(.md-grid-board) tbody tr:hover td {
     background-color: var(--table-hover-color);
 }
 
-#write table :is(td, th) strong {
+#write .md-table-fig > table:not(.md-grid-board) :is(td, th) strong,
+#write > table:not(.md-grid-board) :is(td, th) strong {
     font-weight: 700;
     color: var(--heading-color);
-}
-
-/* ============================================================
- * 表格悬浮工具修复
- * 悬停表格时的调整九宫格 / 对齐工具渲染在 #write 内部, 且复用
- * <table> 结构, 会误吃上方的内容表格样式 (width: 100% + 大内边距
- * + border-collapse 把小格子拉成通栏灰条)。此处仅还原布局属性,
- * 不触碰弹层自身的配色。
- * 若个别版本类名不同导致无效: 开调试模式右键检查该弹层,
- * 把实际的容器类名替换进下方选择器即可。
- * ============================================================ */
-
-#write :is(.md-table-edit, .md-grid-board, .md-table-resize) table,
-#write table.md-grid-board {
-    width: auto;
-    margin: 0;
-    border: 0;
-    border-collapse: separate;
-}
-
-#write :is(.md-table-edit, .md-grid-board, .md-table-resize) tr {
-    border: 0;
-}
-
-#write :is(.md-table-edit, .md-grid-board, .md-table-resize) :is(th, td) {
-    padding: 0;
-    line-height: normal;
-    font-size: inherit;
-    vertical-align: middle;
-}
-
-#write :is(.md-table-edit, .md-grid-board, .md-table-resize) tbody tr:hover td {
-    background-color: transparent;
 }
 
 /* ============================================================
@@ -496,7 +489,7 @@ body {
 
 .code-tooltip {
     background-color: var(--panel-bg-color);
-    box-shadow: 0 10px 24px rgba(73, 49, 34, 0.08);
+    box-shadow: var(--shadow-tooltip);
     border-top: 1px solid var(--code-border-color);
 }
 
@@ -678,7 +671,7 @@ body {
 #write .md-task-list-item > input:checked {
     border-color: var(--accent-color);
     background-color: var(--accent-color);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 12 12%27%3E%3Cpath fill=%27none%27 stroke=%27%23fff%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 d=%27M2.5 6.2 5 8.5 9.5 3.5%27/%3E%3C/svg%3E");
+    background-image: var(--checkbox-check-image);
     background-repeat: no-repeat;
     background-position: center;
     background-size: 0.72em 0.72em;
@@ -780,6 +773,7 @@ body {
  * ============================================================ */
 
 @media print {
+
     html {
         font-size: 13px;
     }
@@ -888,7 +882,7 @@ body {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     background-color: var(--panel-bg-color);
-    box-shadow: 0 12px 32px rgba(43, 38, 33, 0.12);
+    box-shadow: var(--shadow-panel);
 }
 
 #typora-quick-open input,
@@ -945,7 +939,7 @@ body {
 #md-searchpanel .searchpanel-search-option-btn.active {
     background-color: var(--accent-color);
     border-color: var(--accent-color);
-    color: #faf9f5;
+    color: var(--on-accent-color);
 }
 
 /* ============================================================
@@ -963,7 +957,7 @@ footer {
     background-color: var(--panel-bg-color);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(43, 38, 33, 0.1);
+    box-shadow: var(--shadow-menu);
 }
 
 .dropdown-menu .divider {
@@ -986,6 +980,7 @@ footer {
 .btn-primary {
     background-color: var(--accent-color);
     border-color: var(--accent-color);
+    color: var(--on-accent-color);
 }
 
 .btn-primary:hover,
@@ -1009,7 +1004,7 @@ footer {
 }
 
 .ty-preferences .nav-group-item.active {
-    color: #faf9f5;
+    color: var(--on-accent-color);
     background: var(--accent-color);
 }
 
@@ -1136,4 +1131,3 @@ footer {
     visibility: hidden !important;
     pointer-events: none !important;
 }
-

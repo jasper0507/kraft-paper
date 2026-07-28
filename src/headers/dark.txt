@@ -1,0 +1,14 @@
+/**
+ * Kraft Paper Dark
+ * 模仿 Claude (claude.ai) 暗色模式的暖调阅读主题 — kraft-paper 的暗色版。
+ * Repo: github.com/jasper0507/kraft-paper
+ *
+ * 与亮色版的关系
+ *  - 结构规则与亮色共享同一份 src/structure (构建拼装)
+ *  - 差异: src/tokens/dark.css + src/host/dark-only.css
+ *  - 打印 / 导出 PDF 时注入亮色 token, 自动切回亮色纸面
+ *
+ * 设计基准 / 结构约定 / 最低版本: 见 kraft-paper.css 头部说明
+ * 本文件由 src/ 构建生成; 请改源码后运行 npm run build
+ */
+

@@ -1,0 +1,44 @@
+/* ============================================================
+ * 基础
+ * ============================================================ */
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    background-color: var(--bg-color);
+}
+
+body {
+    /* 界面缺省无衬线; 正文字体在 #write 上生效, 避免衬线泄漏进侧栏 / 菜单 / 弹窗 */
+    font-family: var(--font-ui);
+    color: var(--text-color);
+    background-color: var(--bg-color);
+}
+
+#write {
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.62;
+    max-width: 768px;
+    margin: 0 auto;
+    padding: 40px 32px 104px;
+    caret-color: var(--accent-color);
+    overflow-wrap: break-word; /* 长 URL / 长行内代码不撑破栏宽 */
+}
+
+@media only screen and (max-width: 768px) {
+    #write {
+        padding: 24px 20px 84px;
+    }
+}
+
+/* 源码模式与正文同底色 */
+#typora-source {
+    background-color: var(--bg-color);
+}
+
+#typora-source .CodeMirror-lines {
+    font-variant-ligatures: none; /* 关闭编程连字, != 不再显示为 ≠ */
+    font-family: var(--font-mono);
+    color: var(--text-color);
+}

@@ -1,0 +1,44 @@
+/* ============================================================
+ * 暗色专属 (host adapter: Typora dark chrome extras)
+ * ============================================================ */
+
+/* 滚动条: 默认浅色滚动条在暗底上刺眼 */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb-color);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb-hover-color);
+}
+
+/* 源码模式: 默认语法配色按亮底设计, 暗底下逐项映射到主题色板 */
+#typora-source .cm-header,
+#typora-source .cm-strong {
+    color: var(--heading-color);
+}
+
+#typora-source .cm-comment,
+#typora-source .cm-meta {
+    color: var(--code-muted-color);
+}
+
+#typora-source .cm-string {
+    color: var(--code-string-color);
+}
+
+#typora-source .cm-link,
+#typora-source .cm-url {
+    color: var(--accent-color);
+}
+
+#typora-source .cm-keyword,
+#typora-source .cm-atom {
+    color: var(--code-keyword-color);
+}

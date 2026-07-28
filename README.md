@@ -19,12 +19,14 @@
 
 ---
 
-一对以 **claude.ai 界面设计语言**为蓝本的 Typora 主题：暖米色纸感的浅色 `kraft-paper`，与暖灰深底的深色 `kraft-paper-dark`。配色对齐官网暖纸体系（陶土橙 + 暖灰中性色），排版为**正文衬线 + 界面无衬线**；中文遵循「宋体正文，黑体强调」。明暗两文件结构规则对称，差异集中在 `:root` 变量与暗色专属段。
+一对以 **claude.ai 界面设计语言**为蓝本的 Typora 主题：暖米色纸感的浅色 `kraft-paper`，与暖灰深底的深色 `kraft-paper-dark`。配色对齐官网暖纸体系（陶土橙 + 暖灰中性色），排版为**正文衬线 + 界面无衬线**；中文遵循「宋体正文，黑体强调」。
+
+**源码**在 `src/`（tokens + 共享 structure + 暗色 host adapter）；**交付**仍是两个自包含 monofile（Typora 要求）。改样式请编辑 `src/` 后执行 `npm run build`。
 
 - 适配环境：**Typora ≥ 1.5**（建议较新版本）；主要在 **Windows 11** 上验证
 - 正文栏宽固定 **768px**（约 48rem，对齐 claude.ai 聊天栏 measure），不随大屏无限加宽
 - 中英混排：正文走 Tiempos / Source Serif / 宋体系；界面与强调字族按拉丁 / CJK 分别回退
-- 内容样式限定在 `#write`，颜色一律走变量，便于成对维护明暗主题
+- 内容样式限定在 `#write`，颜色 / 阴影 / 勾选图一律走 `:root` 变量
 
 ---
 
@@ -48,8 +50,13 @@
 
 | 文件 | 说明 |
 | --- | --- |
-| `kraft-paper.css` | 浅色主题（主文件，单文件自包含） |
-| `kraft-paper-dark.css` | 深色主题（结构与浅色对齐，含暗色专属规则） |
+| `kraft-paper.css` | 浅色主题 monofile（构建产物，可直接安装） |
+| `kraft-paper-dark.css` | 深色主题 monofile（构建产物，含暗色专属规则） |
+| `src/tokens/` | 明 / 暗色板与 elevation token（真源） |
+| `src/structure/` | 共享排版与 chrome 规则（仅 `var(...)`） |
+| `src/host/dark-only.css` | 暗色 host adapter（滚动条、源码模式） |
+
+开发者：`npm install` 非必需（无运行时依赖）。`npm run build` 生成 monofile 并同步下文色板表；`npm test` 校验 token 对齐、结构无硬编码色、明暗结构对等。
 
 ### 主题目录
 
@@ -83,18 +90,23 @@
 
 核心原则：陶土橙做链接、光标、勾选、焦点与侧栏激活等**强调交互**；正文 / 标题走独立暖色文本阶，边线统一暖灰，避免中性灰在米色纸面上发脏。
 
+<!-- palette:start -->
 | 角色 | 浅色 | 深色 |
 | --- | --- | --- |
-| 页面底色 | `#faf9f5` 暖纸 | `#262624` 暖深 |
+| 页面底色 | `#faf9f5` | `#262624` |
 | 侧栏底 | `#f0eee6` | `#201F1C` |
 | 正文 | `#2b2621` | `#E8E6DE` |
 | 标题 | `#1c1815` | `#F5F3EC` |
 | 次级文本 | `#72695e` | `#A29A8D` |
 | 强调色 `--accent-color` | `#c15f3c` | `#D97757` |
 | 强调悬停 | `#a14d2e` | `#E69373` |
+| 强调上前景 `--on-accent-color` | `#faf9f5` | `#262624` |
 | 边线 | `#ddd5ca` | `#3E3B36` |
 | 高亮 `==mark==` | `#f2e3c2` | `#5C4726` |
 | 行内代码字色 | `#a34a3a` | `#E39A82` |
+<!-- palette:end -->
+
+> 色板表由 `npm run build` 从 `src/tokens/` 同步；请勿手改表内 hex。
 
 ### 字体栈
 
@@ -144,7 +156,7 @@
 
 - 表头 / 行间 / 底边使用**分级暖灰**分隔线；单元格留白偏松，适合参数表与对比表
 - 行悬停淡橙底；样式**仅作用于 `#write` 内表格**，避免污染 megamenu 等界面面板
-- 表格悬浮编辑工具（九宫格 / 对齐条）单独还原布局，避免误吃内容表样式
+- 内容表仅样式 `.md-table-fig > table` / `#write > table`，并 `:not(.md-grid-board)`，避免九宫格与编辑浮层误吃内容表样式
 
 ### 行内代码 / 键帽 / 高亮
 
@@ -191,32 +203,35 @@
 
 ---
 
-## 六、自定义入口（改 `:root` 即可）
+## 六、自定义入口
 
-| 想改什么 | 动哪个变量 / 位置 |
+| 想改什么 | 动哪里 |
 | --- | --- |
-| 换强调色 | `--accent-color` / `--accent-hover-color` / `--focus-ring-color` |
+| 换强调色 | `src/tokens/*`：`--accent-color` / `--accent-hover-color` / `--focus-ring-color` / `--on-accent-color` |
+| 阴影 / 勾选对勾 | `--shadow-*` / `--checkbox-check-image` |
 | 换字体 | `--font-body` / `--font-ui` / `--font-strong` / `--font-mono` |
-| 列宽 | `#write { max-width }`（默认 768px） |
+| 列宽 | `src/structure/01-base.css` → `#write { max-width }`（默认 768px） |
 | 代码高亮 | `--code-keyword/string/number/symbol/muted-color` |
 | 表格 / 引用 | `--table-*` / `--quote-*` |
 | 侧栏激活 | `--active-file-bg/border/text-color` |
 | 高亮底 | `--mark-bg-color` |
+| 暗色滚动条 / 源码 token | `src/host/dark-only.css` |
 
-明暗两文件请**成对修改**：结构规则应对齐，差异尽量只留在 `:root` 与暗色专属段。
+改完后：`npm run build`，再把 monofile 拷进 Typora 主题目录。终端用户若只装 monofile，仍可直接改构建产物里的 `:root`（下次 build 会覆盖）。
 
 ---
 
 ## 七、自检建议
 
-用 [`examples/showcase.md`](examples/showcase.md)（或任意含标题 / 列表 / 任务列表 / 表格 / 代码块 / 引用 / 高亮 / 脚注的长文），在明暗两主题下对照：
+用 [`examples/showcase.md`](examples/showcase.md) 按文内清单回归；或任意含标题 / 列表 / 任务列表 / 表格 / 代码块 / 引用 / 高亮 / 脚注的长文，在明暗两主题下对照：
 
 1. 正文衬线与粗体强调是否分层清晰（中文粗体不发糊）
-2. 表格边线层级、行悬停、表格编辑浮层是否正常
-3. 任务列表勾选对比度、完成态删除线
+2. 表格边线层级、行悬停；编辑浮层（九宫格）**不被**内容表样式拉通栏
+3. 任务列表勾选对比度（对勾走 `--on-accent-color`）、完成态删除线
 4. 深色下源码模式 token 是否可读
 5. 深色打印 / 导出 PDF 是否回到亮色纸面
 6. Windows 下侧栏图标、megamenu 是否被字族污染
+7. 开发者：`npm test` 全绿；改 token 后 `npm run build` 色板表已更新
 
 ---
 

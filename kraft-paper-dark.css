@@ -4,33 +4,34 @@
  * Repo: github.com/jasper0507/kraft-paper
  *
  * 与亮色版的关系
- *  - 结构规则与 kraft-paper.css 完全一致, 差异集中在 :root 变量与文末「暗色专属」段;
- *    修改排版结构时请同步两个文件
- *  - 暗色专属差异: 勾选对勾 / 强调底上的文字改用深色、阴影加深、
- *    滚动条与源码模式配色、打印 / 导出 PDF 时自动切回亮色纸面
+ *  - 结构规则与亮色共享同一份 src/structure (构建拼装)
+ *  - 差异: src/tokens/dark.css + src/host/dark-only.css
+ *  - 打印 / 导出 PDF 时注入亮色 token, 自动切回亮色纸面
  *
  * 设计基准 / 结构约定 / 最低版本: 见 kraft-paper.css 头部说明
+ * 本文件由 src/ 构建生成; 请改源码后运行 npm run build
  */
 
 :root {
     /* ---- 表面 ---- */
-    --bg-color: #262624;                 /* 主纸面 (claude.ai 暗色同源) */
-    --side-bar-bg-color: #201F1C;        /* 侧栏, 比纸面再深半档 */
-    --window-bg-color: #2C2B28;          /* 菜单 / 偏好设置等窗口面 */
-    --panel-bg-color: #32312D;           /* 浮层: 暗色下靠提亮表达层级 */
+    --bg-color: #262624; /* 主纸面 (claude.ai 暗色同源) */
+    --side-bar-bg-color: #201F1C; /* 侧栏, 比纸面再深半档 */
+    --window-bg-color: #2C2B28; /* 菜单 / 偏好设置等窗口面 */
+    --panel-bg-color: #32312D; /* 浮层: 暗色下靠提亮表达层级 */
     --item-hover-bg-color: rgba(217, 119, 87, 0.1);
     --select-text-bg-color: #53402F;
 
     /* ---- 文本 ---- */
     --text-color: #E8E6DE;
     --heading-color: #F5F3EC;
-    --control-text-color: #A29A8D;       /* 次级 UI 文本 / 弱化内容 */
+    --control-text-color: #A29A8D; /* 次级 UI 文本 / 弱化内容 */
     --quote-text-color: #B5AC9F;
 
     /* ---- 强调色: 暗色下用更亮的陶土橙 (claude.ai 的 #D97757) ---- */
     --accent-color: #D97757;
-    --accent-hover-color: #E69373;       /* 暗色悬停向更亮走 */
+    --accent-hover-color: #E69373; /* 暗色悬停向更亮走 */
     --focus-ring-color: rgba(217, 119, 87, 0.55);
+    --on-accent-color: #262624; /* 强调底上的前景字 / 勾选对勾 */
 
     /* ---- 边线 (统一暖灰) ---- */
     --border-color: #3E3B36;
@@ -41,16 +42,16 @@
     --table-hover-color: rgba(217, 119, 87, 0.07);
 
     /* ---- 块级底色 ---- */
-    --quote-bg-color: #2E2C28;           /* TOC 等容器 */
-    --mark-bg-color: #5C4726;            /* ==高亮== , 暗琥珀 */
-    --meta-block-bg-color: #2C2A25;      /* YAML front-matter */
+    --quote-bg-color: #2E2C28; /* TOC 等容器 */
+    --mark-bg-color: #5C4726; /* ==高亮== , 暗琥珀 */
+    --meta-block-bg-color: #2C2A25; /* YAML front-matter */
     --math-midline-bg-color: #33302A;
 
     /* ---- 代码 (语法色整体提亮以保证暗底可读) ---- */
     --code-bg-color: #2D2C29;
     --code-text-color: #E8E6DE;
     --code-border-color: #3E3B36;
-    --code-muted-color: #978F82;         /* 注释 / 行号 / 语言标签 */
+    --code-muted-color: #978F82; /* 注释 / 行号 / 语言标签 */
     --code-keyword-color: #AF95DE;
     --code-string-color: #9CBD84;
     --code-number-color: #E0A175;
@@ -65,25 +66,40 @@
     --active-file-border-color: #D97757;
 
     /* ---- Typora 内建变量: 暗色下必须显式给值, 否则沿用面向亮底的默认值 ---- */
-    --blur-text-color: rgba(232, 230, 222, 0.38);   /* 聚焦模式下被虚化的文本 */
-    --md-char-color: #7A7468;                        /* Markdown 语法符号 (如 **) */
-    --meta-content-color: #A29A8D;                   /* 链接地址等元信息 */
-    --rawblock-edit-panel-bd: #33302A;               /* HTML 原始块编辑面板 */
-    --search-select-bg-color: #7A5A24;               /* 文内查找命中项 */
+    --blur-text-color: rgba(232, 230, 222, 0.38); /* 聚焦模式下被虚化的文本 */
+    --md-char-color: #7A7468; /* Markdown 语法符号 (如 **) */
+    --meta-content-color: #A29A8D; /* 链接地址等元信息 */
+    --rawblock-edit-panel-bd: #33302A; /* HTML 原始块编辑面板 */
+    --search-select-bg-color: #7A5A24; /* 文内查找命中项 */
     --search-select-text-color: #F5F3EC;
 
-    /* ---- 字体 (与亮色版一致) ----
-     * 正文: Tiempos Text (claude.ai 同款, 本机装了才生效)
-     *       → Source Serif 4 (导出 HTML 时联网加载, 见下方 @include-when-export)
-     *       → Georgia → 中文衬线 (Windows 建议安装思源宋体, 否则回落系统宋体)
-     * 界面: 拉丁字体在前, CJK 在后 — 中文字体自带拉丁字形,
-     *       排在前面会接管英文, Segoe UI / Plex 就永远轮不到
-     * 强调: 拉丁走衬线粗体, 中文落到黑体 (宋体正文 + 黑体强调)
+    /* ---- 阴影 / 勾选 (闭合规则体硬编码 seam) ---- */
+    --shadow-tooltip: 0 10px 24px rgba(0, 0, 0, 0.35);
+    --shadow-panel: 0 12px 32px rgba(0, 0, 0, 0.5);
+    --shadow-menu: 0 8px 24px rgba(0, 0, 0, 0.45);
+    --checkbox-check-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 12 12%27%3E%3Cpath fill=%27none%27 stroke=%27%23262624%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 d=%27M2.5 6.2 5 8.5 9.5 3.5%27/%3E%3C/svg%3E");
+    --scrollbar-thumb-color: rgba(232, 230, 222, 0.14);
+    --scrollbar-thumb-hover-color: rgba(232, 230, 222, 0.26);
+
+    /* ---- 字体 (与亮色版一致; 真源在 tokens 两文件, 构建不复制结构) ----
+     * 正文: Tiempos Text → Source Serif 4 → Georgia → 中文衬线
+     * 界面: 拉丁在前, CJK 在后
+     * 强调: 拉丁衬线粗体, 中文黑体
      */
-    --font-body: "Tiempos Text", "Source Serif 4", Georgia, "Times New Roman", "Songti SC", "Source Han Serif SC", "Noto Serif CJK SC", serif;
-    --font-ui: "Styrene B LC", "Styrene B", "IBM Plex Sans", -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
-    --font-strong: "Tiempos Text", "Source Serif 4", Georgia, "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
-    --font-mono: ui-monospace, "Cascadia Code", Consolas, "SF Mono", Menlo, Monaco, "Sarasa Mono SC", monospace;
+    --font-body:
+        "Tiempos Text", "Source Serif 4", Georgia, "Times New Roman",
+        "Songti SC", "Source Han Serif SC", "Noto Serif CJK SC", serif;
+    --font-ui:
+        "Styrene B LC", "Styrene B", "IBM Plex Sans", -apple-system, "Segoe UI",
+        "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC",
+        "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+    --font-strong:
+        "Tiempos Text", "Source Serif 4", Georgia, "PingFang SC",
+        "Hiragino Sans GB", "Source Han Sans SC", "Noto Sans CJK SC",
+        "Microsoft YaHei", sans-serif;
+    --font-mono:
+        ui-monospace, "Cascadia Code", Consolas, "SF Mono", Menlo, Monaco,
+        "Sarasa Mono SC", monospace;
 }
 
 /* 导出 HTML 时加载的网络字体 (与上方字体栈对应) */
@@ -129,9 +145,9 @@ body {
 }
 
 #typora-source .CodeMirror-lines {
+    font-variant-ligatures: none; /* 关闭编程连字, != 不再显示为 ≠ */
     font-family: var(--font-mono);
     color: var(--text-color);
-    font-variant-ligatures: none; /* 关闭编程连字, != 不再显示为 ≠ */
 }
 
 /* ============================================================
@@ -222,7 +238,8 @@ body {
 #write ul,
 #write ol,
 #write dl,
-#write table {
+#write .md-table-fig > table:not(.md-grid-board),
+#write > table:not(.md-grid-board) {
     margin: 0.78em 0;
 }
 
@@ -282,7 +299,9 @@ body {
 }
 
 /* 标题与代码类元素保持自身字体 */
-#write :is(h1, h2, h3, h4, h5, h6, pre, code, tt, kbd, .md-fences) :is(strong, b) {
+#write
+    :is(h1, h2, h3, h4, h5, h6, pre, code, tt, kbd, .md-fences)
+    :is(strong, b) {
     font-family: inherit;
 }
 
@@ -313,10 +332,13 @@ body {
 }
 
 /* ============================================================
- * 表格 (限定在 #write 内, 不再污染 megamenu 面板)
+ * 表格 (仅内容表路径)
+ * seam: .md-table-fig / #write 直接子表; 显式 :not(.md-grid-board)
+ * 不匹配 .md-table-edit / .md-grid-board / .md-table-resize 内的表
  * ============================================================ */
 
-#write table {
+#write .md-table-fig > table:not(.md-grid-board),
+#write > table:not(.md-grid-board) {
     padding: 0;
     width: 100%;
     border-collapse: collapse;
@@ -326,22 +348,26 @@ body {
     word-break: initial;
 }
 
-#write table tr {
+#write .md-table-fig > table:not(.md-grid-board) tr,
+#write > table:not(.md-grid-board) tr {
     border: 0;
     margin: 0;
     padding: 0;
     background-color: transparent;
 }
 
-#write table thead tr {
+#write .md-table-fig > table:not(.md-grid-board) thead tr,
+#write > table:not(.md-grid-board) thead tr {
     border-bottom: 1px solid var(--table-border-strong-color);
 }
 
-#write table tbody tr {
+#write .md-table-fig > table:not(.md-grid-board) tbody tr,
+#write > table:not(.md-grid-board) tbody tr {
     border-bottom: 1px solid var(--table-row-border-color);
 }
 
-#write table th {
+#write .md-table-fig > table:not(.md-grid-board) th,
+#write > table:not(.md-grid-board) th {
     font-family: var(--font-body);
     font-weight: 600;
     border: 0;
@@ -355,7 +381,8 @@ body {
     font-variant-numeric: lining-nums tabular-nums;
 }
 
-#write table td {
+#write .md-table-fig > table:not(.md-grid-board) td,
+#write > table:not(.md-grid-board) td {
     border: 0;
     margin: 0;
     padding: 12px 18px 12px 0;
@@ -367,60 +394,34 @@ body {
     font-variant-numeric: lining-nums tabular-nums;
 }
 
-#write table th:first-child,
-#write table td:first-child {
+#write .md-table-fig > table:not(.md-grid-board) th:first-child,
+#write .md-table-fig > table:not(.md-grid-board) td:first-child,
+#write > table:not(.md-grid-board) th:first-child,
+#write > table:not(.md-grid-board) td:first-child {
     color: var(--heading-color);
 }
 
-#write table th:last-child,
-#write table td:last-child {
+#write .md-table-fig > table:not(.md-grid-board) th:last-child,
+#write .md-table-fig > table:not(.md-grid-board) td:last-child,
+#write > table:not(.md-grid-board) th:last-child,
+#write > table:not(.md-grid-board) td:last-child {
     padding-right: 0;
 }
 
-#write table tbody tr:last-child {
+#write .md-table-fig > table:not(.md-grid-board) tbody tr:last-child,
+#write > table:not(.md-grid-board) tbody tr:last-child {
     border-bottom: 0;
 }
 
-#write table tbody tr:hover td {
+#write .md-table-fig > table:not(.md-grid-board) tbody tr:hover td,
+#write > table:not(.md-grid-board) tbody tr:hover td {
     background-color: var(--table-hover-color);
 }
 
-#write table :is(td, th) strong {
+#write .md-table-fig > table:not(.md-grid-board) :is(td, th) strong,
+#write > table:not(.md-grid-board) :is(td, th) strong {
     font-weight: 700;
     color: var(--heading-color);
-}
-
-/* ============================================================
- * 表格悬浮工具修复
- * 悬停表格时的调整九宫格 / 对齐工具渲染在 #write 内部, 且复用
- * <table> 结构, 会误吃上方的内容表格样式 (width: 100% + 大内边距
- * + border-collapse 把小格子拉成通栏灰条)。此处仅还原布局属性,
- * 不触碰弹层自身的配色。
- * 若个别版本类名不同导致无效: 开调试模式右键检查该弹层,
- * 把实际的容器类名替换进下方选择器即可。
- * ============================================================ */
-
-#write :is(.md-table-edit, .md-grid-board, .md-table-resize) table,
-#write table.md-grid-board {
-    width: auto;
-    margin: 0;
-    border: 0;
-    border-collapse: separate;
-}
-
-#write :is(.md-table-edit, .md-grid-board, .md-table-resize) tr {
-    border: 0;
-}
-
-#write :is(.md-table-edit, .md-grid-board, .md-table-resize) :is(th, td) {
-    padding: 0;
-    line-height: normal;
-    font-size: inherit;
-    vertical-align: middle;
-}
-
-#write :is(.md-table-edit, .md-grid-board, .md-table-resize) tbody tr:hover td {
-    background-color: transparent;
 }
 
 /* ============================================================
@@ -433,7 +434,7 @@ body {
     font-size: 0.9em;
     padding: 0.1em 0.4em 0.12em;
     border: 1px solid var(--inline-code-border-color);
-    border-radius: 6px;   /* claude.ai 式小圆角, 弃用胶囊形与高光 */
+    border-radius: 6px; /* claude.ai 式小圆角, 弃用胶囊形与高光 */
     background-color: var(--inline-code-bg-color);
     color: var(--inline-code-color);
     font-variant-ligatures: none; /* 关闭编程连字, != 不再显示为 ≠ */
@@ -480,7 +481,7 @@ body {
 
 .code-tooltip {
     background-color: var(--panel-bg-color);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+    box-shadow: var(--shadow-tooltip);
     border-top: 1px solid var(--code-border-color);
 }
 
@@ -494,6 +495,7 @@ body {
 
 .md-fences {
     font-family: var(--font-mono);
+    font-variant-ligatures: none; /* 关闭编程连字, != 不再显示为 ≠ */
     border: 1px solid var(--code-border-color);
     background-color: var(--code-bg-color);
     color: var(--code-text-color);
@@ -502,7 +504,6 @@ body {
     font-size: 0.9em;
     margin: 0.9em 0 1.1em;
     line-height: 1.55;
-    font-variant-ligatures: none; /* 关闭编程连字, != 不再显示为 ≠ */
 }
 
 /* CodeMirror 自带主题优先级高, 以下 !important 为必要覆盖 */
@@ -662,7 +663,7 @@ body {
 #write .md-task-list-item > input:checked {
     border-color: var(--accent-color);
     background-color: var(--accent-color);
-    background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 12 12%27%3E%3Cpath fill=%27none%27 stroke=%27%23262624%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 d=%27M2.5 6.2 5 8.5 9.5 3.5%27/%3E%3C/svg%3E");
+    background-image: var(--checkbox-check-image);
     background-repeat: no-repeat;
     background-position: center;
     background-size: 0.72em 0.72em;
@@ -679,10 +680,19 @@ body {
 #write .md-task-list-item:has(> input:checked) > p,
 #write .task-list-done > p,
 #write .md-task-list-item.task-list-done > p,
-#write .task-list-item:has(> .task-list-item-checkbox:checked):not(:has(> p)):not(:has(> ul)):not(:has(> ol)),
-#write .md-task-list-item:has(> input:checked):not(:has(> p)):not(:has(> ul)):not(:has(> ol)),
+#write
+    .task-list-item:has(> .task-list-item-checkbox:checked):not(:has(> p)):not(
+        :has(> ul)
+    ):not(:has(> ol)),
+#write
+    .md-task-list-item:has(> input:checked):not(:has(> p)):not(:has(> ul)):not(
+        :has(> ol)
+    ),
 #write .task-list-done:not(:has(> p)):not(:has(> ul)):not(:has(> ol)),
-#write .md-task-list-item.task-list-done:not(:has(> p)):not(:has(> ul)):not(:has(> ol)) {
+#write
+    .md-task-list-item.task-list-done:not(:has(> p)):not(:has(> ul)):not(
+        :has(> ol)
+    ) {
     color: var(--control-text-color);
     text-decoration: line-through;
     text-decoration-color: var(--control-text-color);
@@ -755,35 +765,52 @@ body {
  * ============================================================ */
 
 @media print {
-    /* 暗色主题直接导出会得到深底白字; 打印 / 导出 PDF 时自动切回亮色纸面 */
+    /* 暗色主题直接导出会得到深底白字; 打印时注入亮色 token */
     :root {
-        --bg-color: #FAF9F5;
-        --text-color: #2B2621;
-        --heading-color: #1C1815;
-        --control-text-color: #72695E;
+        --bg-color: #faf9f5;
+        --side-bar-bg-color: #f0eee6;
+        --window-bg-color: #f5f3ec;
+        --panel-bg-color: #fcfaf6;
+        --item-hover-bg-color: rgba(193, 95, 60, 0.08);
+        --select-text-bg-color: #e8ddd0;
+        --text-color: #2b2621;
+        --heading-color: #1c1815;
+        --control-text-color: #72695e;
         --quote-text-color: #625950;
-        --accent-color: #C15F3C;
-        --accent-hover-color: #A14D2E;
-        --border-color: #DDD5CA;
-        --quote-border-color: #DCD2C4;
-        --table-border-strong-color: #8A8175;
-        --table-row-border-color: #C9BFB2;
-        --table-border-soft-color: #E4DCD0;
-        --quote-bg-color: #F3EDE5;
-        --mark-bg-color: #F2E3C2;
-        --meta-block-bg-color: #F4EFE7;
-        --math-midline-bg-color: #F7F2EB;
-        --code-bg-color: #FCFCFA;
-        --code-text-color: #1C1815;
-        --code-border-color: #E9E2D8;
-        --code-muted-color: #8A7F73;
-        --code-keyword-color: #7E4FB5;
-        --code-string-color: #4E7E3C;
-        --code-number-color: #B4622D;
-        --code-symbol-color: #3C6AA8;
-        --inline-code-color: #A34A3A;
-        --inline-code-bg-color: #F2EEEA;
-        --inline-code-border-color: #D7CEC5;
+        --accent-color: #c15f3c;
+        --accent-hover-color: #a14d2e;
+        --focus-ring-color: rgba(193, 95, 60, 0.45);
+        --on-accent-color: #faf9f5;
+        --border-color: #ddd5ca;
+        --quote-border-color: #dcd2c4;
+        --table-border-strong-color: #8a8175;
+        --table-row-border-color: #c9bfb2;
+        --table-border-soft-color: #e4dcd0;
+        --table-hover-color: rgba(193, 95, 60, 0.05);
+        --quote-bg-color: #f3ede5;
+        --mark-bg-color: #f2e3c2;
+        --meta-block-bg-color: #f4efe7;
+        --math-midline-bg-color: #f7f2eb;
+        --code-bg-color: #fcfcfa;
+        --code-text-color: #1c1815;
+        --code-border-color: #e9e2d8;
+        --code-muted-color: #8a7f73;
+        --code-keyword-color: #7e4fb5;
+        --code-string-color: #4e7e3c;
+        --code-number-color: #b4622d;
+        --code-symbol-color: #3c6aa8;
+        --inline-code-color: #a34a3a;
+        --inline-code-bg-color: #f2eeea;
+        --inline-code-border-color: #d7cec5;
+        --active-file-bg-color: rgba(193, 95, 60, 0.14);
+        --active-file-text-color: #1c1815;
+        --active-file-border-color: #c15f3c;
+        --blur-text-color: rgba(43, 38, 33, 0.34);
+        --md-char-color: #a89d8f;
+        --meta-content-color: #72695e;
+        --rawblock-edit-panel-bd: #f4efe7;
+        --search-select-bg-color: #f3d98f;
+        --search-select-text-color: #1c1815;
     }
 
     html {
@@ -894,7 +921,7 @@ body {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     background-color: var(--panel-bg-color);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    box-shadow: var(--shadow-panel);
 }
 
 #typora-quick-open input,
@@ -908,7 +935,7 @@ body {
 #typora-quick-open-item,
 .typora-quick-open-item {
     background-color: transparent;
-    border: 0;   /* 弃用 github 主题遗留的四色斜面边框 */
+    border: 0; /* 弃用 github 主题遗留的四色斜面边框 */
 }
 
 #typora-quick-open-item:hover,
@@ -951,7 +978,7 @@ body {
 #md-searchpanel .searchpanel-search-option-btn.active {
     background-color: var(--accent-color);
     border-color: var(--accent-color);
-    color: #262624;
+    color: var(--on-accent-color);
 }
 
 /* ============================================================
@@ -969,7 +996,7 @@ footer {
     background-color: var(--panel-bg-color);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    box-shadow: var(--shadow-menu);
 }
 
 .dropdown-menu .divider {
@@ -992,7 +1019,7 @@ footer {
 .btn-primary {
     background-color: var(--accent-color);
     border-color: var(--accent-color);
-    color: #262624;
+    color: var(--on-accent-color);
 }
 
 .btn-primary:hover,
@@ -1016,7 +1043,7 @@ footer {
 }
 
 .ty-preferences .nav-group-item.active {
-    color: #262624;
+    color: var(--on-accent-color);
     background: var(--accent-color);
 }
 
@@ -1057,7 +1084,14 @@ footer {
     color: var(--text-color);
 }
 
-.os-windows :is(#megamenu-menu-sidebar, .megamenu-menu-header, #megamenu-menu-list, .megamenu-menu-panel) *:not(.fa) {
+.os-windows
+    :is(
+        #megamenu-menu-sidebar,
+        .megamenu-menu-header,
+        #megamenu-menu-list,
+        .megamenu-menu-panel
+    )
+    *:not(.fa) {
     font-family: var(--font-ui) !important;
 }
 
@@ -1138,7 +1172,7 @@ footer {
 }
 
 /* ============================================================
- * 暗色专属
+ * 暗色专属 (host adapter: Typora dark chrome extras)
  * ============================================================ */
 
 /* 滚动条: 默认浅色滚动条在暗底上刺眼 */
@@ -1149,12 +1183,12 @@ footer {
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: rgba(232, 230, 222, 0.14);
+    background-color: var(--scrollbar-thumb-color);
     border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(232, 230, 222, 0.26);
+    background-color: var(--scrollbar-thumb-hover-color);
 }
 
 /* 源码模式: 默认语法配色按亮底设计, 暗底下逐项映射到主题色板 */
