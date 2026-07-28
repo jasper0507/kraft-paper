@@ -5,7 +5,7 @@
  *
  * 与亮色版的关系
  *  - 结构规则与亮色共享同一份 src/structure (构建拼装)
- *  - 差异: src/tokens/dark.css + src/host/dark-only.css
+ *  - 差异: src/tokens/dark.css + src/dark-only.css
  *  - 打印 / 导出 PDF 时注入亮色 token, 自动切回亮色纸面
  *
  * 设计基准 / 结构约定 / 最低版本: 见 kraft-paper.css 头部说明

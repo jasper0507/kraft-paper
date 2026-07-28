@@ -2,16 +2,11 @@
   "name": "kraft-paper",
   "version": "2.1.0",
   "private": true,
-  "description": "Kraft Paper — warm Typora themes (light + dark), built from a single structure source",
+  "description": "Kraft Paper Typora themes (light + dark)",
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "node --test scripts/test/theme.test.mjs",
-    "check": "node scripts/check.mjs",
-    "prepublishOnly": "npm run check && npm run build"
-  },
-  "engines": {
-    "node": ">=18"
+    "test": "node --test scripts/test/theme.test.mjs"
   },
   "license": "MIT"
 }

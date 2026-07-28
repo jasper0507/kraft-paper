@@ -59,19 +59,16 @@
     --search-select-bg-color: #7A5A24; /* 文内查找命中项 */
     --search-select-text-color: #F5F3EC;
 
-    /* ---- 阴影 / 勾选 (闭合规则体硬编码 seam) ---- */
+    /* ---- 阴影 / 勾选 ---- */
     --shadow-tooltip: 0 10px 24px rgba(0, 0, 0, 0.35);
     --shadow-panel: 0 12px 32px rgba(0, 0, 0, 0.5);
     --shadow-menu: 0 8px 24px rgba(0, 0, 0, 0.45);
     --checkbox-check-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 12 12%27%3E%3Cpath fill=%27none%27 stroke=%27%23262624%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 d=%27M2.5 6.2 5 8.5 9.5 3.5%27/%3E%3C/svg%3E");
+    /* 仅暗色 host 使用 */
     --scrollbar-thumb-color: rgba(232, 230, 222, 0.14);
     --scrollbar-thumb-hover-color: rgba(232, 230, 222, 0.26);
 
-    /* ---- 字体 (与亮色版一致; 真源在 tokens 两文件, 构建不复制结构) ----
-     * 正文: Tiempos Text → Source Serif 4 → Georgia → 中文衬线
-     * 界面: 拉丁在前, CJK 在后
-     * 强调: 拉丁衬线粗体, 中文黑体
-     */
+    /* ---- 字体 (与亮色同值) ---- */
     --font-body:
         "Tiempos Text", "Source Serif 4", Georgia, "Times New Roman",
         "Songti SC", "Source Han Serif SC", "Noto Serif CJK SC", serif;

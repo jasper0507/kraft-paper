@@ -59,22 +59,13 @@
     --search-select-bg-color: #f3d98f; /* 文内查找命中项, 暖琥珀替换默认亮黄 */
     --search-select-text-color: #1c1815;
 
-    /* ---- 阴影 / 勾选 (闭合规则体硬编码 seam) ---- */
+    /* ---- 阴影 / 勾选 ---- */
     --shadow-tooltip: 0 10px 24px rgba(73, 49, 34, 0.08);
     --shadow-panel: 0 12px 32px rgba(43, 38, 33, 0.12);
     --shadow-menu: 0 8px 24px rgba(43, 38, 33, 0.1);
     --checkbox-check-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 12 12%27%3E%3Cpath fill=%27none%27 stroke=%27%23faf9f5%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 d=%27M2.5 6.2 5 8.5 9.5 3.5%27/%3E%3C/svg%3E");
-    --scrollbar-thumb-color: rgba(43, 38, 33, 0.18);
-    --scrollbar-thumb-hover-color: rgba(43, 38, 33, 0.32);
 
-    /* ---- 字体 ----
-     * 正文: Tiempos Text (claude.ai 同款, 本机装了才生效)
-     *       → Source Serif 4 (导出 HTML 时联网加载, 见下方 @include-when-export)
-     *       → Georgia → 中文衬线 (Windows 建议安装思源宋体, 否则回落系统宋体)
-     * 界面: 拉丁字体在前, CJK 在后 — 中文字体自带拉丁字形,
-     *       排在前面会接管英文, Segoe UI / Plex 就永远轮不到
-     * 强调: 拉丁走衬线粗体, 中文落到黑体 (宋体正文 + 黑体强调)
-     */
+    /* ---- 字体 ---- */
     --font-body:
         "Tiempos Text", "Source Serif 4", Georgia, "Times New Roman",
         "Songti SC", "Source Han Serif SC", "Noto Serif CJK SC", serif;

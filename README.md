@@ -52,11 +52,11 @@
 | --- | --- |
 | `kraft-paper.css` | 浅色主题 monofile（构建产物，可直接安装） |
 | `kraft-paper-dark.css` | 深色主题 monofile（构建产物，含暗色专属规则） |
-| `src/tokens/` | 明 / 暗色板与 elevation token（真源） |
-| `src/structure/` | 共享排版与 chrome 规则（仅 `var(...)`） |
-| `src/host/dark-only.css` | 暗色 host adapter（滚动条、源码模式） |
+| `src/tokens/` | 明 / 暗色板（真源） |
+| `src/structure.css` | 共享排版与 chrome（仅 `var(...)`） |
+| `src/dark-only.css` | 暗色专用（滚动条、源码模式） |
 
-开发者：`npm install` 非必需（无运行时依赖）。`npm run build` 生成 monofile 并同步下文色板表；`npm test` 校验 token 对齐、结构无硬编码色、明暗结构对等。
+开发者：无运行时依赖。`npm run build` 生成 monofile 并同步色板表；`npm test` 做冒烟校验。
 
 ### 主题目录
 
@@ -210,12 +210,12 @@
 | 换强调色 | `src/tokens/*`：`--accent-color` / `--accent-hover-color` / `--focus-ring-color` / `--on-accent-color` |
 | 阴影 / 勾选对勾 | `--shadow-*` / `--checkbox-check-image` |
 | 换字体 | `--font-body` / `--font-ui` / `--font-strong` / `--font-mono` |
-| 列宽 | `src/structure/01-base.css` → `#write { max-width }`（默认 768px） |
+| 列宽 | `src/structure.css` → `#write { max-width }`（默认 768px） |
 | 代码高亮 | `--code-keyword/string/number/symbol/muted-color` |
 | 表格 / 引用 | `--table-*` / `--quote-*` |
 | 侧栏激活 | `--active-file-bg/border/text-color` |
 | 高亮底 | `--mark-bg-color` |
-| 暗色滚动条 / 源码 token | `src/host/dark-only.css` |
+| 暗色滚动条 / 源码 token | `src/dark-only.css` |
 
 改完后：`npm run build`，再把 monofile 拷进 Typora 主题目录。终端用户若只装 monofile，仍可直接改构建产物里的 `:root`（下次 build 会覆盖）。
 
@@ -231,7 +231,7 @@
 4. 深色下源码模式 token 是否可读
 5. 深色打印 / 导出 PDF 是否回到亮色纸面
 6. Windows 下侧栏图标、megamenu 是否被字族污染
-7. 开发者：`npm test` 全绿；改 token 后 `npm run build` 色板表已更新
+7. 开发者：`npm test`；改源码后 `npm run build`
 
 ---
 

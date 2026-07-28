@@ -13,11 +13,12 @@ console.log(
   `built kraft-paper.css (${light.split("\n").length} lines), kraft-paper-dark.css (${dark.split("\n").length} lines)`
 );
 
-// C6: keep README palette table in sync with tokens
 const readmePath = path.join(ROOT, "README.md");
-let readme = fs.readFileSync(readmePath, "utf8");
+const readme = fs.readFileSync(readmePath, "utf8");
 if (readme.includes("<!-- palette:start -->")) {
-  readme = syncReadmePalette(readme, renderPaletteMarkdown());
-  fs.writeFileSync(readmePath, readme);
+  fs.writeFileSync(
+    readmePath,
+    syncReadmePalette(readme, renderPaletteMarkdown())
+  );
   console.log("synced README palette table");
 }
