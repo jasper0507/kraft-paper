@@ -1,1 +1,17 @@
-PLACEHOLDER_LIGHT_CSS
+/**
+ * Kraft Paper
+ * 模仿 Claude (claude.ai) 界面风格的暖调阅读主题。
+ * Repo: github.com/jasper0507/kraft-paper
+ *
+ * 设计基准
+ *  - 纸面 / 侧栏 / 陶土强调色对齐 claude.ai 的暖米色体系
+ *  - 正文栏宽 768px, 对齐 claude.ai 聊天栏 (48rem), 固定 measure 不随大屏加宽
+ *  - 正文衬线 + 界面无衬线; 中文遵循「宋体正文, 黑体强调」
+ *
+ * 结构约定
+ *  - body 只承载界面字体 (--font-ui); 一切内容排版规则限定在 #write 内
+ *  - 颜色一律走 :root 变量 (含少量暖调透明色), 便于后续派生暗色主题
+ *
+ * 最低版本: Typora >= 1.5
+ *  - 任务列表勾选态用到 :has(), 旧版由 .task-list-done 规则兜底
+ */
