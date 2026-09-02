@@ -67,17 +67,14 @@
 
     /* ---- 字体 ---- */
     --font-body:
-        "Tiempos Text", "Source Serif 4", Georgia, "Times New Roman",
-        "Songti SC", "Source Han Serif SC", "Noto Serif CJK SC", serif;
+        "Noto Serif SC", Georgia, "Times New Roman",
+        "Songti SC", "Source Han Serif SC", serif;
     --font-ui:
         "Styrene B LC", "Styrene B", "IBM Plex Sans", -apple-system, "Segoe UI",
         "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC",
-        "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
-    --font-strong:
-        "Tiempos Text", "Source Serif 4", Georgia, "PingFang SC",
-        "Hiragino Sans GB", "Source Han Sans SC", "Noto Sans CJK SC",
         "Microsoft YaHei", sans-serif;
+    --font-strong:
+        "Kraft Paper Strong", "Noto Serif SC", Georgia, "Times New Roman", serif;
     --font-mono:
-        ui-monospace, "Cascadia Code", Consolas, "SF Mono", Menlo, Monaco,
-        "Sarasa Mono SC", monospace;
+        ui-monospace, "Cascadia Code", Consolas, "Microsoft YaHei", monospace;
 }
