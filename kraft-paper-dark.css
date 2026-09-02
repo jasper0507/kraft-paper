@@ -1,3 +1,1250 @@
 /**
  * Kraft Paper Dark
+ * 模仿 Claude (claude.ai) 暗色模式的暖调阅读主题 — kraft-paper 的暗色版。
+ * Repo: github.com/jasper0507/kraft-paper
+ *
+ * 与亮色版的关系
+ *  - 结构规则与 kraft-paper.css 完全一致, 差异集中在 :root 变量与文末「暗色专属」段;
+ *    修改排版结构时请同步两个文件
+ *  - 暗色专属差异: 勾选对勾 / 强调底上的文字改用深色、阴影加深、
+ *    滚动条与源码模式配色、打印 / 导出 PDF 时自动切回亮色纸面
+ *
+ * 设计基准 / 结构约定 / 最低版本: 见 kraft-paper.css 头部说明
  */
+
+:root {
+    /* ---- 表面 ---- */
+    --bg-color: #262624;                 /* 主纸面 (claude.ai 暗色同源) */
+    --side-bar-bg-color: #201F1C;        /* 侧栏, 比纸面再深半档 */
+    --window-bg-color: #2C2B28;          /* 菜单 / 偏好设置等窗口面 */
+    --panel-bg-color: #32312D;           /* 浮层: 暗色下靠提亮表达层级 */
+    --item-hover-bg-color: rgba(217, 119, 87, 0.1);
+    --select-text-bg-color: #53402F;
+
+    /* ---- 文本 ---- */
+    --text-color: #E8E6DE;
+    --heading-color: #F5F3EC;
+    --control-text-color: #A29A8D;       /* 次级 UI 文本 / 弱化内容 */
+    --quote-text-color: #B5AC9F;
+
+    /* ---- 强调色: 暗色下用更亮的陶土橙 (claude.ai 的 #D97757) ---- */
+    /* --accent-color 只给装饰; 字色走 --accent-text-color (暗底上二者可更接近) */
+    --accent-color: #D97757;
+    --accent-text-color: #D97757;
+    --accent-hover-color: #E69373;       /* 暗色悬停向更亮走 */
+    --focus-ring-color: rgba(217, 119, 87, 0.55);
+
+    /* ---- 边线 (统一暖灰) ---- */
+    --border-color: #3E3B36;
+    --quote-border-color: #45413A;
+    --table-border-strong-color: #8C8478;
+    --table-row-border-color: #4A463F;
+    --table-border-soft-color: #3A3733;
+    --table-hover-color: rgba(217, 119, 87, 0.07);
+
+    /* ---- 块级底色 ---- */
+    --quote-bg-color: #2E2C28;           /* TOC 等容器 */
+    --mark-bg-color: #5C4726;            /* ==高亮== , 暗琥珀 */
+    --meta-block-bg-color: #2C2A25;      /* YAML front-matter */
+    --math-midline-bg-color: #33302A;
+
+    /* ---- 代码 (语法色整体提亮以保证暗底可读) ---- */
+    --code-bg-color: #2D2C29;
+    --code-text-color: #E8E6DE;
+    --code-border-color: #3E3B36;
+    --code-muted-color: #978F82;         /* 注释 / 行号 / 语言标签 */
+    --code-keyword-color: #AF95DE;
+    --code-string-color: #9CBD84;
+    --code-number-color: #E0A175;
+    --code-symbol-color: #85AEDC;
+    --inline-code-color: #E39A82;
+    --inline-code-bg-color: #363430;
+    --inline-code-border-color: #47443E;
+
+    /* ---- 文件列表选中态 (Typora 内建变量) ---- */
+    --active-file-bg-color: rgba(217, 119, 87, 0.16);
+    --active-file-text-color: #F5F3EC;
+    --active-file-border-color: #D97757;
+
+    /* ---- Typora 内建变量: 暗色下必须显式给值, 否则沿用面向亮底的默认值 ---- */
+    --blur-text-color: rgba(232, 230, 222, 0.38);   /* 聚焦模式下被虚化的文本 */
+    --md-char-color: #7A7468;                        /* Markdown 语法符号 (如 **) */
+    --meta-content-color: #A29A8D;                   /* 链接地址等元信息 */
+    --rawblock-edit-panel-bd: #33302A;               /* HTML 原始块编辑面板 */
+    --search-select-bg-color: #7A5A24;               /* 文内查找命中项 */
+    --search-select-text-color: #F5F3EC;
+
+    /* ---- 字体 (与亮色版一致) ----
+     * 正文: Tiempos Text (claude.ai 同款, 本机装了才生效)
+     *       → Source Serif 4 (导出 HTML 时联网加载, 见下方 @include-when-export)
+     *       → Georgia → 中文衬线 (Windows 建议安装思源宋体, 否则回落系统宋体)
+     * 界面: 拉丁字体在前, CJK 在后 — 中文字体自带拉丁字形,
+     *       排在前面会接管英文, Segoe UI / Plex 就永远轮不到
+     * 强调: 拉丁走衬线粗体, 中文落到黑体 (宋体正文 + 黑体强调)
+     */
+    --font-body: "Tiempos Text", "Source Serif 4", Georgia, "Times New Roman", "Songti SC", "Source Han Serif SC", "Noto Serif CJK SC", serif;
+    --font-ui: "Styrene B LC", "Styrene B", "IBM Plex Sans", -apple-system, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+    --font-strong: "Tiempos Text", "Source Serif 4", Georgia, "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+    --font-mono: ui-monospace, "Cascadia Code", Consolas, "SF Mono", Menlo, Monaco, "Sarasa Mono SC", monospace;
+}
+
+/* 导出 HTML 时加载的网络字体 (与上方字体栈对应) */
+@include-when-export url(https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap);
+
+/* ============================================================
+ * 基础
+ * ============================================================ */
+
+html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    background-color: var(--bg-color);
+}
+
+body {
+    /* 界面缺省无衬线; 正文字体在 #write 上生效, 避免衬线泄漏进侧栏 / 菜单 / 弹窗 */
+    font-family: var(--font-ui);
+    color: var(--text-color);
+    background-color: var(--bg-color);
+}
+
+#write {
+    font-family: var(--font-body);
+    font-weight: 400;
+    line-height: 1.62;
+    max-width: 768px;
+    margin: 0 auto;
+    padding: 40px 32px 104px;
+    caret-color: var(--accent-color);
+    overflow-wrap: break-word; /* 长 URL / 长行内代码不撑破栏宽 */
+}
+
+@media only screen and (max-width: 768px) {
+    #write {
+        padding: 24px 20px 84px;
+    }
+}
+
+/* 源码模式与正文同底色 */
+#typora-source {
+    background-color: var(--bg-color);
+}
+
+#typora-source .CodeMirror-lines {
+    font-family: var(--font-mono);
+    color: var(--text-color);
+    font-variant-ligatures: none; /* 关闭编程连字, != 不再显示为 ≠ */
+}
+
+/* ============================================================
+ * 链接
+ * ============================================================ */
+
+#write a {
+    color: var(--accent-text-color);
+    text-decoration: none;
+}
+
+#write a:hover {
+    color: var(--accent-hover-color);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+#write a:focus-visible {
+    outline: 2px solid var(--focus-ring-color);
+    outline-offset: 2px;
+    border-radius: 2px;
+}
+
+/* ============================================================
+ * 标题
+ * ============================================================ */
+
+#write h1,
+#write h2,
+#write h3,
+#write h4,
+#write h5,
+#write h6 {
+    position: relative;
+    margin-top: 1.45rem;
+    margin-bottom: 0.7rem;
+    font-family: var(--font-body);
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--heading-color);
+    cursor: text;
+}
+
+#write :is(h1, h2, h3, h4, h5, h6) :is(code, tt) {
+    font-size: inherit;
+}
+
+#write h1 {
+    font-size: 1.84em;
+    line-height: 1.16;
+    margin-top: 1.9rem;
+}
+
+/* 文首标题贴顶 (不再让所有 h1 都失去上间距) */
+#write > :is(h1, h2):first-child {
+    margin-top: 0.35rem;
+}
+
+#write h2 {
+    font-size: 1.48em;
+    line-height: 1.2;
+    padding-bottom: 0.25em;
+    border-bottom: 1px solid rgba(217, 119, 87, 0.28);
+    border-bottom: 1px solid color-mix(in srgb, var(--accent-color) 28%, transparent);
+}
+
+#write h3 {
+    font-size: 1.24em;
+    line-height: 1.32;
+}
+
+#write h4 {
+    font-size: 1.12em;
+}
+
+#write h5 {
+    font-size: 1em;
+}
+
+#write h6 {
+    font-size: 1em;
+    color: var(--control-text-color);
+}
+
+/* ============================================================
+ * 段落节奏与列表
+ * ============================================================ */
+
+#write p,
+#write blockquote,
+#write ul,
+#write ol,
+#write dl,
+#write table {
+    margin: 0.78em 0;
+}
+
+#write :is(ul, ol):first-child {
+    margin-top: 0;
+}
+
+#write :is(ul, ol):last-child {
+    margin-bottom: 0;
+}
+
+#write ul,
+#write ol {
+    padding-left: 1.45rem;
+}
+
+#write li {
+    padding-left: 0.15rem;
+}
+
+#write li::marker {
+    color: var(--control-text-color);
+}
+
+#write li > ol,
+#write li > ul {
+    margin: 0;
+}
+
+#write hr {
+    height: 1px;
+    padding: 0;
+    margin: 26px 0;
+    background-color: var(--border-color);
+    border: 0 none;
+    overflow: hidden;
+    box-sizing: content-box;
+    opacity: 0.75;
+}
+
+#write img {
+    max-width: 100%;
+}
+
+/* ============================================================
+ * 强调
+ * 中文排版习惯: 宋体正文的强调用黑体 (宋体伪粗会发糊);
+ * 拉丁字形保持衬线粗体, 由 --font-strong 的排序实现。
+ * ============================================================ */
+
+#write strong,
+#write b {
+    font-family: var(--font-strong);
+    font-weight: 700;
+    color: var(--heading-color);
+    font-synthesis: weight;
+}
+
+/* 标题与代码类元素保持自身字体 */
+#write :is(h1, h2, h3, h4, h5, h6, pre, code, tt, kbd, .md-fences) :is(strong, b) {
+    font-family: inherit;
+}
+
+/* ============================================================
+ * 引用
+ * ============================================================ */
+
+#write blockquote {
+    border-left: 3px solid var(--quote-border-color);
+    background-color: transparent;
+    padding: 0.1em 0 0.1em 1rem;
+    color: var(--quote-text-color);
+    border-radius: 0;
+    box-shadow: none;
+}
+
+#write blockquote p {
+    margin: 0.35em 0;
+}
+
+#write blockquote blockquote {
+    margin-left: 0.5rem;
+    padding-right: 0;
+}
+
+.on-focus-mode blockquote {
+    border-left-color: var(--quote-border-color);
+}
+
+/* ============================================================
+ * GitHub Alerts (> [!NOTE] 等)
+ * 左强调条 + 极淡底, 不做圆角卡片, 与引用块同属一条竖线语言
+ * ============================================================ */
+
+#write .md-alert {
+    border-left: 3px solid var(--border-color);
+    border-radius: 0;
+    box-shadow: none;
+    padding: 0.15em 0 0.15em 1rem;
+    margin: 0.78em 0;
+    background-color: transparent;
+}
+
+#write .md-alert:has(.md-alert-text-note) {
+    border-left-color: #4493f8;
+    background-color: rgba(68, 147, 248, 0.08);
+}
+
+#write .md-alert:has(.md-alert-text-tip) {
+    border-left-color: #3fb950;
+    background-color: rgba(63, 185, 80, 0.08);
+}
+
+#write .md-alert:has(.md-alert-text-important) {
+    border-left-color: #ab7df8;
+    background-color: rgba(171, 125, 248, 0.08);
+}
+
+#write .md-alert:has(.md-alert-text-warning) {
+    border-left-color: #d29922;
+    background-color: rgba(210, 153, 34, 0.08);
+}
+
+#write .md-alert:has(.md-alert-text-caution) {
+    border-left-color: #f85149;
+    background-color: rgba(248, 81, 73, 0.08);
+}
+
+#write .md-alert-text-note,
+#write .md-alert-text-tip,
+#write .md-alert-text-important,
+#write .md-alert-text-warning,
+#write .md-alert-text-caution {
+    font-family: var(--font-ui);
+    font-weight: 600;
+}
+
+#write .md-alert-text-note { color: #4493f8; }
+#write .md-alert-text-tip { color: #3fb950; }
+#write .md-alert-text-important { color: #ab7df8; }
+#write .md-alert-text-warning { color: #d29922; }
+#write .md-alert-text-caution { color: #f85149; }
+
+
+/* ============================================================
+ * 表格 (限定在 #write 内, 不再污染 megamenu 面板)
+ * ============================================================ */
+
+#write table {
+    padding: 0;
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 0;
+    border-bottom: 1px solid var(--table-border-soft-color);
+    background-color: transparent;
+    word-break: initial;
+}
+
+#write table tr {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+}
+
+#write table thead tr {
+    border-bottom: 1px solid var(--table-border-strong-color);
+}
+
+#write table tbody tr {
+    border-bottom: 1px solid var(--table-row-border-color);
+}
+
+#write table th {
+    font-family: var(--font-body);
+    font-weight: 600;
+    border: 0;
+    margin: 0;
+    padding: 12px 18px 11px 0;
+    text-align: left;
+    vertical-align: bottom;
+    color: var(--heading-color);
+    font-size: 0.93rem;
+    line-height: 1.48;
+    font-variant-numeric: lining-nums tabular-nums;
+}
+
+#write table td {
+    border: 0;
+    margin: 0;
+    padding: 12px 18px 12px 0;
+    vertical-align: top;
+    font-family: var(--font-body);
+    font-size: 0.93rem;
+    line-height: 1.56;
+    font-weight: 400;
+    font-variant-numeric: lining-nums tabular-nums;
+}
+
+#write table th:first-child,
+#write table td:first-child {
+    color: var(--heading-color);
+}
+
+#write table th:last-child,
+#write table td:last-child {
+    padding-right: 0;
+}
+
+#write table tbody tr:last-child {
+    border-bottom: 0;
+}
+
+#write table tbody tr:hover td {
+    background-color: var(--table-hover-color);
+}
+
+#write table :is(td, th) strong {
+    font-weight: 700;
+    color: var(--heading-color);
+}
+
+/* ============================================================
+ * 表格悬浮工具修复
+ * 悬停表格时的调整九宫格 / 对齐工具渲染在 #write 内部, 且复用
+ * <table> 结构, 会误吃上方的内容表格样式 (width: 100% + 大内边距
+ * + border-collapse 把小格子拉成通栏灰条)。此处仅还原布局属性,
+ * 不触碰弹层自身的配色。
+ * 若个别版本类名不同导致无效: 开调试模式右键检查该弹层,
+ * 把实际的容器类名替换进下方选择器即可。
+ * ============================================================ */
+
+#write :is(.md-table-edit, .md-grid-board, .md-table-resize) table,
+#write table.md-grid-board {
+    width: auto;
+    margin: 0;
+    border: 0;
+    border-collapse: separate;
+}
+
+#write :is(.md-table-edit, .md-grid-board, .md-table-resize) tr {
+    border: 0;
+}
+
+#write :is(.md-table-edit, .md-grid-board, .md-table-resize) :is(th, td) {
+    padding: 0;
+    line-height: normal;
+    font-size: inherit;
+    vertical-align: middle;
+}
+
+#write :is(.md-table-edit, .md-grid-board, .md-table-resize) tbody tr:hover td {
+    background-color: transparent;
+}
+
+/* ============================================================
+ * 行内代码 / kbd / 高亮
+ * ============================================================ */
+
+#write code,
+#write tt {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    padding: 0.1em 0.4em 0.12em;
+    border: 1px solid var(--inline-code-border-color);
+    border-radius: 6px;   /* claude.ai 式小圆角, 弃用胶囊形与高光 */
+    background-color: var(--inline-code-bg-color);
+    color: var(--inline-code-color);
+    font-variant-ligatures: none; /* 关闭编程连字, != 不再显示为 ≠ */
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+}
+
+#write kbd {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    padding: 0.1em 0.45em;
+    border: 1px solid var(--border-color);
+    border-bottom-width: 2px;
+    border-radius: 6px;
+    background-color: var(--panel-bg-color);
+    color: var(--text-color);
+    box-shadow: none;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+}
+
+#write mark {
+    background-color: var(--mark-bg-color);
+    color: inherit;
+    padding: 0.05em 0.15em;
+    border-radius: 3px;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+}
+
+/* ============================================================
+ * 脚注 (论文主题的核心元素)
+ * ============================================================ */
+
+#write sup.md-footnote {
+    background-color: transparent;
+    color: var(--accent-text-color);
+    font-family: var(--font-ui);
+    font-size: 0.72em;
+    padding: 0 2px;
+}
+
+#write .md-def-name {
+    color: var(--accent-text-color);
+}
+
+#write .md-def-content {
+    color: var(--quote-text-color);
+}
+
+.code-tooltip {
+    background-color: var(--panel-bg-color);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+    border-top: 1px solid var(--code-border-color);
+}
+
+/* ============================================================
+ * 代码块
+ * ============================================================ */
+
+.CodeMirror-lines {
+    padding-left: 0;
+}
+
+.md-fences {
+    font-family: var(--font-mono);
+    border: 1px solid var(--code-border-color);
+    background-color: var(--code-bg-color);
+    color: var(--code-text-color);
+    border-radius: 8px;
+    padding: 0.9rem 1rem 0.85rem;
+    font-size: 0.9em;
+    margin: 0.9em 0 1.1em;
+    line-height: 1.55;
+    font-variant-ligatures: none; /* 关闭编程连字, != 不再显示为 ≠ */
+}
+
+/* CodeMirror 自带主题优先级高, 以下 !important 为必要覆盖 */
+.md-fences pre,
+.md-fences code,
+.md-fences tt,
+.md-fences .CodeMirror,
+.md-fences .CodeMirror pre,
+.md-fences .cm-s-inner {
+    font-family: var(--font-mono) !important;
+    color: inherit !important;
+}
+
+.md-fences .cm-s-inner span {
+    font-family: var(--font-mono) !important;
+}
+
+.md-fences code,
+.md-fences tt {
+    border: 0 !important;
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+.md-fences .CodeMirror,
+.md-fences .CodeMirror-scroll,
+.md-fences .CodeMirror-sizer,
+.md-fences .CodeMirror-gutters,
+.md-fences .CodeMirror-lines {
+    background-color: transparent !important;
+}
+
+.md-fences .CodeMirror-cursor {
+    border-left: 1px solid var(--code-text-color) !important;
+}
+
+/* 代码块内的选区 (亮暗共用, 走变量) */
+.md-fences .CodeMirror-selected,
+.md-fences .CodeMirror-focused .CodeMirror-selected {
+    background-color: var(--select-text-bg-color) !important;
+}
+
+.md-fences .CodeMirror-line::selection,
+.md-fences .CodeMirror-line > span::selection,
+.md-fences .CodeMirror-line > span > span::selection {
+    background-color: var(--select-text-bg-color);
+}
+
+.md-fences .CodeMirror-linenumber,
+.md-fences .cm-comment,
+.md-fences .cm-meta {
+    color: var(--code-muted-color) !important;
+}
+
+.md-fences .cm-keyword,
+.md-fences .cm-def,
+.md-fences .cm-variable-2,
+.md-fences .cm-variable-3,
+.md-fences .cm-atom,
+.md-fences .cm-builtin {
+    color: var(--code-keyword-color) !important;
+}
+
+.md-fences .cm-string,
+.md-fences .cm-string-2 {
+    color: var(--code-string-color) !important;
+}
+
+.md-fences .cm-number {
+    color: var(--code-number-color) !important;
+}
+
+.md-fences .cm-tag,
+.md-fences .cm-attribute,
+.md-fences .cm-property,
+.md-fences .cm-qualifier,
+.md-fences .cm-link {
+    color: var(--code-symbol-color) !important;
+}
+
+.md-fences .cm-operator,
+.md-fences .cm-variable,
+.md-fences .cm-bracket {
+    color: var(--code-text-color) !important;
+}
+
+.md-lang {
+    color: var(--code-muted-color);
+}
+
+/* ============================================================
+ * 数学公式
+ * ============================================================ */
+
+.md-inline-math,
+.md-inline-math .MathJax,
+.md-inline-math .MathJax_SVG,
+.md-inline-math mjx-container {
+    /* 略大于正文即可; 过大 (原 1.08) 会造成段内行高跳动 */
+    font-size: 1.02em !important;
+}
+
+.mathjax-block > .code-tooltip {
+    bottom: 0.375rem;
+}
+
+.md-mathjax-midline {
+    background: var(--math-midline-bg-color);
+}
+
+/* ============================================================
+ * 任务列表
+ * ============================================================ */
+
+#write .task-list-item,
+#write .md-task-list-item {
+    list-style-type: none !important;
+    padding-left: 0;
+    position: relative;
+}
+
+#write .task-list-item::marker,
+#write .md-task-list-item::marker {
+    content: "";
+}
+
+#write .task-list-item-checkbox,
+#write .md-task-list-item > input {
+    position: absolute;
+    top: 0.4em;
+    left: -1.4em;
+    -webkit-appearance: none;
+    appearance: none;
+    box-sizing: border-box;
+    width: 0.95em;
+    height: 0.95em;
+    margin: 0;
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    background-color: var(--bg-color);
+    background-image: none;
+    font-size: inherit;
+    cursor: pointer;
+    transition: none;
+}
+
+#write .task-list-item-checkbox:hover,
+#write .md-task-list-item > input:hover {
+    border-color: var(--accent-color);
+    transform: none;
+}
+
+/* 勾选态用强调色 — 原先的灰米色 (#d0ccc6) 与白色对勾对比度约 1.6:1, 几乎不可辨 */
+#write .task-list-item-checkbox:checked,
+#write .md-task-list-item > input:checked {
+    border-color: var(--accent-color);
+    background-color: var(--accent-color);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 12 12%27%3E%3Cpath fill=%27none%27 stroke=%27%23262624%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 d=%27M2.5 6.2 5 8.5 9.5 3.5%27/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 0.72em 0.72em;
+}
+
+#write .task-list-item-checkbox:focus-visible,
+#write .md-task-list-item > input:focus-visible {
+    outline: 2px solid var(--focus-ring-color);
+    outline-offset: 2px;
+}
+
+/* 已完成项弱化 (:has() 需较新版本, .task-list-done 为旧版兜底) */
+#write .task-list-item:has(> .task-list-item-checkbox:checked) > p,
+#write .md-task-list-item:has(> input:checked) > p,
+#write .task-list-done > p,
+#write .md-task-list-item.task-list-done > p,
+#write .task-list-item:has(> .task-list-item-checkbox:checked):not(:has(> p)):not(:has(> ul)):not(:has(> ol)),
+#write .md-task-list-item:has(> input:checked):not(:has(> p)):not(:has(> ul)):not(:has(> ol)),
+#write .task-list-done:not(:has(> p)):not(:has(> ul)):not(:has(> ol)),
+#write .md-task-list-item.task-list-done:not(:has(> p)):not(:has(> ul)):not(:has(> ol)) {
+    color: var(--control-text-color);
+    text-decoration: line-through;
+    text-decoration-color: var(--control-text-color);
+}
+
+/* ============================================================
+ * TOC / front-matter / 其他内容元素
+ * ============================================================ */
+
+.md-toc {
+    margin-top: 20px;
+    padding: 18px 20px;
+    background-color: var(--quote-bg-color);
+    border-radius: 10px;
+}
+
+#write pre.md-meta-block {
+    font-family: var(--font-mono);
+    padding: 1rem;
+    font-size: 85%;
+    line-height: 1.5;
+    background-color: var(--meta-block-bg-color);
+    border: 0;
+    border-radius: 10px;
+    color: var(--control-text-color);
+    margin-top: 0 !important;
+}
+
+.md-tag {
+    color: var(--code-muted-color);
+    opacity: 1;
+}
+
+.md-image > .md-meta {
+    border-radius: 3px;
+    padding: 2px 0 0 4px;
+    font-size: 0.9em;
+    color: inherit;
+}
+
+/* mermaid / 流程图面板不要压白底 */
+#write .md-diagram-panel,
+#write .md-diagram-panel .md-diagram-panel-preview {
+    background-color: transparent;
+}
+
+/* 聚焦模式的标题指示点位置 (沿用原调校值) */
+#write > h3.md-focus:before {
+    left: -1.5625rem;
+    top: 0.375rem;
+}
+
+#write > h4.md-focus:before {
+    left: -1.5625rem;
+    top: 0.285714286rem;
+}
+
+#write > h5.md-focus:before {
+    left: -1.5625rem;
+    top: 0.285714286rem;
+}
+
+#write > h6.md-focus:before {
+    left: -1.5625rem;
+    top: 0.285714286rem;
+}
+
+/* ============================================================
+ * 打印 / PDF 导出
+ * ============================================================ */
+
+@media print {
+    /* 暗色主题直接导出会得到深底白字; 打印 / 导出 PDF 时自动切回亮色纸面 */
+    :root {
+        --bg-color: #FAF9F5;
+        --text-color: #2B2621;
+        --heading-color: #1C1815;
+        --control-text-color: #72695E;
+        --quote-text-color: #625950;
+        --accent-color: #C15F3C;
+        --accent-text-color: #A14D2E;
+        --accent-hover-color: #8A4026;
+        --border-color: #DDD5CA;
+        --quote-border-color: #DCD2C4;
+        --table-border-strong-color: #8A8175;
+        --table-row-border-color: #C9BFB2;
+        --table-border-soft-color: #E4DCD0;
+        --quote-bg-color: #F3EDE5;
+        --mark-bg-color: #F2E3C2;
+        --meta-block-bg-color: #F4EFE7;
+        --math-midline-bg-color: #F7F2EB;
+        --code-bg-color: #FCFCFA;
+        --code-text-color: #1C1815;
+        --code-border-color: #E9E2D8;
+        --code-muted-color: #8A7F73;
+        --code-keyword-color: #7E4FB5;
+        --code-string-color: #4E7E3C;
+        --code-number-color: #B4622D;
+        --code-symbol-color: #3C6AA8;
+        --inline-code-color: #A34A3A;
+        --inline-code-bg-color: #F2EEEA;
+        --inline-code-border-color: #D7CEC5;
+    }
+
+    html {
+        font-size: 13px;
+    }
+
+    #write {
+        max-width: 100%;
+        padding: 0;
+    }
+
+    #write pre,
+    #write blockquote,
+    #write table,
+    #write img,
+    #write .md-fences {
+        page-break-inside: avoid;
+    }
+
+    #write :is(h1, h2, h3) {
+        page-break-after: avoid;
+    }
+
+    #write pre {
+        word-wrap: break-word;
+    }
+
+    .md-fences,
+    #write code,
+    #write tt,
+    #write mark,
+    #write pre.md-meta-block {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+}
+
+/* ============================================================
+ * 侧栏
+ * body 已是无衬线, 不再需要逐节点的 font-family !important 补丁;
+ * 若个别节点仍被内建样式覆盖, 再针对性加回。
+ * ============================================================ */
+
+#typora-sidebar {
+    background-color: var(--side-bar-bg-color);
+    font-family: var(--font-ui);
+    color: var(--text-color);
+}
+
+.mac-seamless-mode #typora-sidebar {
+    background-color: var(--side-bar-bg-color);
+}
+
+.sidebar-tabs {
+    border-bottom: none;
+}
+
+.file-list-item-summary,
+.file-list-item-parent-loc,
+.file-node-icon,
+.file-node-open-state,
+.outline-expander {
+    color: var(--control-text-color);
+}
+
+.file-list-item-file-ext-part,
+.file-node-title-ext-part {
+    opacity: 1;
+    color: var(--text-color);
+}
+
+.outline-item:hover,
+.file-list-item:hover,
+.ty-side-sort-btn.active,
+.outline-expander:hover {
+    background-color: var(--item-hover-bg-color);
+}
+
+.file-list-item.active,
+.file-tree-node.active > .file-node-background,
+.outline-item.active {
+    background-color: var(--active-file-bg-color);
+    border-left: 0;
+    box-shadow: inset 3px 0 0 var(--active-file-border-color);
+}
+
+.file-list-item.active,
+.file-tree-node.active > .file-node-content,
+.outline-item.active {
+    color: var(--active-file-text-color);
+}
+
+.file-list-item.active .file-list-item-file-ext-part,
+.file-tree-node.active .file-node-title-ext-part {
+    color: var(--active-file-text-color);
+}
+
+.file-node-content:hover .file-node-icon,
+.file-node-content:hover .file-node-open-state {
+    visibility: visible;
+}
+
+/* ============================================================
+ * Quick open (新版 DOM 用 class, 旧版用 id, 两者都写)
+ * ============================================================ */
+
+#typora-quick-open {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--panel-bg-color);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+}
+
+#typora-quick-open input,
+#typora-quick-open-input,
+#typora-quick-open-input input {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+#typora-quick-open-item,
+.typora-quick-open-item {
+    background-color: transparent;
+    border: 0;   /* 弃用 github 主题遗留的四色斜面边框 */
+}
+
+#typora-quick-open-item:hover,
+.typora-quick-open-item:hover {
+    background-color: var(--item-hover-bg-color);
+}
+
+#typora-quick-open-item.active,
+.typora-quick-open-item.active {
+    background-color: var(--active-file-bg-color);
+    color: var(--heading-color);
+}
+
+/* ============================================================
+ * 搜索 / 替换面板
+ * ============================================================ */
+
+#md-searchpanel {
+    background-color: var(--window-bg-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+#md-searchpanel input {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-color);
+}
+
+#md-searchpanel input:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px var(--focus-ring-color);
+}
+
+#md-searchpanel .searchpanel-search-option-btn {
+    border-radius: 4px;
+    color: var(--control-text-color);
+}
+
+#md-searchpanel .searchpanel-search-option-btn.active {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #262624;
+}
+
+/* ============================================================
+ * 菜单 / 弹窗 / 按钮
+ * ============================================================ */
+
+header,
+.context-menu,
+.megamenu-content,
+footer {
+    font-family: var(--font-ui);
+}
+
+.dropdown-menu {
+    background-color: var(--panel-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.dropdown-menu .divider {
+    border-color: var(--border-color);
+    opacity: 0.6;
+}
+
+.dropdown-menu > li > a:hover,
+.dropdown-menu > .active > a {
+    background-color: var(--item-hover-bg-color);
+    color: var(--heading-color);
+}
+
+.modal-content {
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+}
+
+.btn-primary {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+    color: #262624;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: var(--accent-hover-color);
+    border-color: var(--accent-hover-color);
+}
+
+#md-notification .btn {
+    border: 0;
+}
+
+.menu-item-container a.menu-style-btn {
+    background-color: var(--panel-bg-color);
+    border: 1px solid var(--border-color);
+}
+
+.ty-preferences .window-content {
+    background-color: var(--window-bg-color);
+}
+
+.ty-preferences .nav-group-item.active {
+    color: #262624;
+    background: var(--accent-color);
+}
+
+/* ============================================================
+ * Windows: 标题栏 / 页脚 / megamenu
+ * 覆盖内建皮肤需要 !important; background 简写同时清掉渐变底图。
+ * ============================================================ */
+
+.os-windows header,
+.os-windows.megamenu-opened header,
+.os-windows #top-titlebar,
+.os-windows footer,
+.os-windows footer.ty-footer,
+.os-windows .ty-footer {
+    background: var(--bg-color) !important;
+    color: var(--text-color);
+}
+
+.os-windows #top-titlebar > *,
+.os-windows #top-titlebar .titlebar-button,
+.os-windows #top-titlebar .window-control {
+    background-color: transparent;
+}
+
+.os-windows #megamenu-menu-sidebar,
+.os-windows .megamenu-menu,
+.os-windows .megamenu-menu-header,
+.os-windows #megamenu-menu-list,
+.os-windows .megamenu-content {
+    background: var(--window-bg-color) !important;
+    color: var(--text-color);
+}
+
+.os-windows.megamenu-opened content,
+.os-windows.megamenu-opened #megamenu-content,
+.os-windows.megamenu-opened .megamenu-content {
+    background: var(--bg-color) !important;
+    color: var(--text-color);
+}
+
+.os-windows :is(#megamenu-menu-sidebar, .megamenu-menu-header, #megamenu-menu-list, .megamenu-menu-panel) *:not(.fa) {
+    font-family: var(--font-ui) !important;
+}
+
+/* 图标字体保护, 放在字体覆盖之后 */
+.os-windows footer .ty-icon,
+.os-windows footer .ty-icon:before,
+.os-windows .ty-footer .ty-icon,
+.os-windows .ty-footer .ty-icon:before,
+.os-windows #ty-sidebar-footer .ty-icon,
+.os-windows #ty-sidebar-footer .ty-icon:before,
+.os-windows #ty-sidebar-footer .ty-add:before,
+.os-windows #ty-sidebar-footer .ty-three-cells:before,
+.os-windows #ty-sidebar-footer .ty-file-tree:before,
+.os-windows #typora-sidebar .sidebar-footer .ty-icon,
+.os-windows #typora-sidebar .sidebar-footer .ty-icon:before {
+    font-family: "typora-icon" !important;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+}
+
+.os-windows #megamenu-menu-sidebar,
+.os-windows .megamenu-menu {
+    box-shadow: none;
+    border-right: 1px solid var(--border-color);
+}
+
+.os-windows .megamenu-menu-header {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.os-windows #megamenu-back-btn,
+.os-windows .megamenu-menu-header #megamenu-menu-header-title,
+.os-windows .megamenu-menu-header #megamenu-menu-header-title:before {
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+.os-windows :is(#megamenu-menu-list, .megamenu-menu-list) li,
+.os-windows :is(#megamenu-menu-list, .megamenu-menu-list) li a {
+    color: var(--text-color);
+    opacity: 1;
+}
+
+.os-windows :is(#megamenu-menu-list, .megamenu-menu-list) li a:hover,
+.os-windows :is(#megamenu-menu-list, .megamenu-menu-list) li a.active {
+    color: var(--heading-color);
+    background-color: var(--item-hover-bg-color);
+}
+
+.os-windows :is(#megamenu-menu-list, .megamenu-menu-list) li.disabled,
+.os-windows :is(#megamenu-menu-list, .megamenu-menu-list) li.disabled a {
+    color: var(--control-text-color);
+    opacity: 0.68;
+}
+
+.os-windows .megamenu-menu-panel,
+.os-windows .megamenu-menu-panel :is(table, tbody, tr, td) {
+    color: var(--text-color);
+}
+
+.os-windows .long-btn:hover,
+.os-windows .megamenu-menu-panel tbody tr:hover td {
+    background-color: var(--item-hover-bg-color);
+}
+
+/* megamenu 打开时冻结侧栏交互 (沿用原修复) */
+.os-windows.megamenu-opened #typora-sidebar {
+    pointer-events: none !important;
+}
+
+.os-windows.megamenu-opened #typora-sidebar-resizer {
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* ============================================================
+ * 暗色专属
+ * ============================================================ */
+
+/* 滚动条: 默认浅色滚动条在暗底上刺眼 */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    background-color: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(232, 230, 222, 0.14);
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(232, 230, 222, 0.26);
+}
+
+/* 源码模式: 默认语法配色按亮底设计, 暗底下逐项映射到主题色板 */
+#typora-source .cm-header,
+#typora-source .cm-strong {
+    color: var(--heading-color);
+}
+
+#typora-source .cm-comment,
+#typora-source .cm-meta {
+    color: var(--code-muted-color);
+}
+
+#typora-source .cm-string {
+    color: var(--code-string-color);
+}
+
+#typora-source .cm-link,
+#typora-source .cm-url {
+    color: var(--accent-text-color);
+}
+
+#typora-source .cm-keyword,
+#typora-source .cm-atom {
+    color: var(--code-keyword-color);
+}
