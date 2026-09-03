@@ -209,3 +209,37 @@ test("light and dark font family tokens match", () => {
   assert.match(ui, /Microsoft YaHei/);
   assert.doesNotMatch(ui, /Noto/);
 });
+
+test("README does not claim Songti body + Heiti emphasis", () => {
+  const md = read("README.md");
+  assert.doesNotMatch(md, /宋体正文[，,]\s*黑体强调/);
+  assert.match(md, /强调分族/);
+});
+
+test("CJK Kraft Paper Strong prefers Bold/Medium local names", () => {
+  const faces = fontFaceBlocks(read("src/structure.css"));
+  const cjk = faces.find(
+    (f) => /Kraft Paper Strong/i.test(f) && /U\+4E00/i.test(f)
+  );
+  assert.ok(cjk, "CJK Kraft Paper Strong face missing");
+  const src = (cjk.match(/src\s*:\s*([^;]+)/i) || [])[1] || "";
+  assert.match(src, /local\("Microsoft YaHei Bold"\)/);
+  assert.match(src, /local\("Microsoft YaHei UI Bold"\)/);
+  const boldAt = src.indexOf("YaHei Bold");
+  const regularAt = src.search(/local\("Microsoft YaHei"\)/);
+  assert.ok(boldAt >= 0, "YaHei Bold local missing");
+  assert.ok(
+    regularAt < 0 || boldAt < regularAt,
+    "Bold local must come before Regular YaHei"
+  );
+});
+
+test("font-strong does not fall through to Noto Serif SC", () => {
+  for (const file of ["src/tokens/light.css", "src/tokens/dark.css"]) {
+    const strong = parseTokenMap(read(file)).get("--font-strong") ?? "";
+    assert.match(strong, /Kraft Paper Strong/);
+    assert.match(strong, /Microsoft YaHei/);
+    assert.doesNotMatch(strong, /Noto Serif SC/);
+  }
+});
+

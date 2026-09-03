@@ -93,7 +93,7 @@
         "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC",
         "Microsoft YaHei", sans-serif;
     --font-strong:
-        "Kraft Paper Strong", "Noto Serif SC", Georgia, "Times New Roman", serif;
+        "Kraft Paper Strong", Georgia, "Times New Roman", "Microsoft YaHei", sans-serif;
     --font-mono:
         ui-monospace, "Cascadia Code", Consolas, "Microsoft YaHei", monospace;
 }
@@ -127,7 +127,7 @@
 
 @font-face {
     font-family: "Kraft Paper Strong";
-    src: local("Microsoft YaHei"), local("Microsoft YaHei UI"), local("微软雅黑"), local("PingFang SC"), local("PingFangSC-Regular"), local("Hiragino Sans GB");
+    src: local("Microsoft YaHei Bold"), local("Microsoft YaHei UI Bold"), local("微软雅黑 Bold"), local("PingFangSC-Medium"), local("PingFangSC-Semibold"), local("PingFang SC Medium"), local("Hiragino Sans GB W6"), local("Microsoft YaHei"), local("Microsoft YaHei UI"), local("微软雅黑"), local("PingFang SC"), local("PingFangSC-Regular"), local("Hiragino Sans GB");
     font-weight: 700;
     font-style: normal;
     font-display: swap;

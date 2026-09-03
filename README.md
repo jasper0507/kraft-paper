@@ -19,7 +19,7 @@
 
 ---
 
-一对以 **claude.ai 界面设计语言**为蓝本的 Typora 主题：暖米色纸感的浅色 `kraft-paper`，与暖灰深底的深色 `kraft-paper-dark`。配色对齐官网暖纸体系（陶土橙 + 暖灰中性色），排版为**正文衬线 + 界面无衬线**；中文遵循「宋体正文，黑体强调」。
+一对以 **claude.ai 界面设计语言**为蓝本的 Typora 主题：暖米色纸感的浅色 `kraft-paper`，与暖灰深底的深色 `kraft-paper-dark`。配色对齐官网暖纸体系（陶土橙 + 暖灰中性色），排版为**正文衬线 + 界面无衬线**；正文中英走自托管 Noto Serif SC，强调分族（拉丁 Noto 700 / 中文本地雅黑）。
 
 **源码**在 `src/`（tokens + 共享 structure + 暗色 host adapter）；**交付**仍是两个自包含 monofile（Typora 要求）。改样式请编辑 `src/` 后执行 `npm run build`。
 

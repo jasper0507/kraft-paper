@@ -77,7 +77,7 @@
         "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC",
         "Microsoft YaHei", sans-serif;
     --font-strong:
-        "Kraft Paper Strong", "Noto Serif SC", Georgia, "Times New Roman", serif;
+        "Kraft Paper Strong", Georgia, "Times New Roman", "Microsoft YaHei", sans-serif;
     --font-mono:
         ui-monospace, "Cascadia Code", Consolas, "Microsoft YaHei", monospace;
 }
