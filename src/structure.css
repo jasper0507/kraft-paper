@@ -1,5 +1,39 @@
-/* 导出 HTML 时加载的网络字体 (与上方字体栈对应) */
-@include-when-export url(https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap);
+/* 自托管 Noto Serif SC (与 css 同级 kraft-paper/); 缺目录时浏览器静默回退系统栈 */
+@font-face {
+    font-family: "Noto Serif SC";
+    src: url("kraft-paper/NotoSerifSC-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Noto Serif SC";
+    src: url("kraft-paper/NotoSerifSC-Bold.woff2") format("woff2");
+    font-weight: 600 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* 强调分族: 拉丁 Noto 700, CJK 本地雅黑/苹方. 禁止 strong 整段换微软雅黑 */
+@font-face {
+    font-family: "Kraft Paper Strong";
+    src: url("kraft-paper/NotoSerifSC-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+    font-family: "Kraft Paper Strong";
+    src: local("Microsoft YaHei Bold"), local("Microsoft YaHei UI Bold"), local("微软雅黑 Bold"), local("PingFangSC-Medium"), local("PingFangSC-Semibold"), local("PingFang SC Medium"), local("Hiragino Sans GB W6"), local("Microsoft YaHei"), local("Microsoft YaHei UI"), local("微软雅黑"), local("PingFang SC"), local("PingFangSC-Regular"), local("Hiragino Sans GB");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+    unicode-range: U+2E80-2FFF, U+3000-303F, U+31C0-31EF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF, U+20000-2FA1F;
+}
+
 /* ============================================================
  * 基础
  * ============================================================ */
@@ -20,7 +54,9 @@ body {
 #write {
     font-family: var(--font-body);
     font-weight: 400;
-    line-height: 1.62;
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+    font-kerning: normal;
     max-width: 768px;
     margin: 0 auto;
     padding: 40px 32px 104px;
@@ -76,7 +112,7 @@ body {
 #write h5,
 #write h6 {
     position: relative;
-    margin-top: 1.45rem;
+    margin-top: 1.55rem;
     margin-bottom: 0.7rem;
     font-family: var(--font-body);
     font-weight: 600;
@@ -134,7 +170,7 @@ body {
 #write dl,
 #write .md-table-fig > table:not(.md-grid-board),
 #write > table:not(.md-grid-board) {
-    margin: 0.78em 0;
+    margin: 0.95em 0;
 }
 
 #write :is(ul, ol):first-child {
@@ -180,8 +216,8 @@ body {
 
 /* ============================================================
  * 强调
- * 中文排版习惯: 宋体正文的强调用黑体 (宋体伪粗会发糊);
- * 拉丁字形保持衬线粗体, 由 --font-strong 的排序实现。
+ * 强调分族: unicode-range 拆 @font-face (拉丁 Noto 700 / CJK 本地雅黑苹方);
+ * 禁止 strong/b 整段 font-family: 微软雅黑。标题仍走正文字族衬线。
  * ============================================================ */
 
 #write strong,
@@ -326,6 +362,7 @@ body {
 #write tt {
     font-family: var(--font-mono);
     font-size: 0.9em;
+    letter-spacing: 0;
     padding: 0.1em 0.4em 0.12em;
     border: 1px solid var(--inline-code-border-color);
     border-radius: 6px; /* claude.ai 式小圆角, 弃用胶囊形与高光 */
@@ -337,6 +374,7 @@ body {
 #write kbd {
     font-family: var(--font-mono);
     font-size: 0.85em;
+    letter-spacing: 0;
     padding: 0.1em 0.45em;
     border: 1px solid var(--border-color);
     border-bottom-width: 2px;
@@ -395,8 +433,9 @@ body {
     border-radius: 8px;
     padding: 0.9rem 1rem 0.85rem;
     font-size: 0.9em;
-    margin: 0.9em 0 1.1em;
-    line-height: 1.55;
+    margin: 1.15em 0;
+    line-height: 1.65;
+    letter-spacing: 0;
 }
 
 /* CodeMirror 自带主题优先级高, 以下 !important 为必要覆盖 */

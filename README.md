@@ -19,13 +19,13 @@
 
 ---
 
-一对以 **claude.ai 界面设计语言**为蓝本的 Typora 主题：暖米色纸感的浅色 `kraft-paper`，与暖灰深底的深色 `kraft-paper-dark`。配色对齐官网暖纸体系（陶土橙 + 暖灰中性色），排版为**正文衬线 + 界面无衬线**；中文遵循「宋体正文，黑体强调」。
+一对以 **claude.ai 界面设计语言**为蓝本的 Typora 主题：暖米色纸感的浅色 `kraft-paper`，与暖灰深底的深色 `kraft-paper-dark`。配色对齐官网暖纸体系（陶土橙 + 暖灰中性色），排版为**正文衬线 + 界面无衬线**；正文中英走自托管 Noto Serif SC，强调分族（拉丁 Noto 700 / 中文本地雅黑）。
 
 **源码**在 `src/`（tokens + 共享 structure + 暗色 host adapter）；**交付**仍是两个自包含 monofile（Typora 要求）。改样式请编辑 `src/` 后执行 `npm run build`。
 
 - 适配环境：**Typora ≥ 1.5**（建议较新版本）；主要在 **Windows 11** 上验证
 - 正文栏宽固定 **768px**（约 48rem，对齐 claude.ai 聊天栏 measure），不随大屏无限加宽
-- 中英混排：正文走 Tiempos / Source Serif / 宋体系；界面与强调字族按拉丁 / CJK 分别回退
+- 中英混排：正文中英都走自托管 Noto Serif SC；强调分族（拉丁 Noto 700 / 中文本地雅黑）
 - 内容样式限定在 `#write`，颜色 / 阴影 / 勾选图一律走 `:root` 变量
 
 ---
@@ -55,12 +55,13 @@
 | `src/tokens/` | 明 / 暗色板（真源） |
 | `src/structure.css` | 共享排版与 chrome（仅 `var(...)`） |
 | `src/dark-only.css` | 暗色专用（滚动条、源码模式） |
+| `kraft-paper/` | 自托管 Noto Serif SC 400/700 woff2 + `OFL.txt`（与 css 同级） |
 
 开发者：无运行时依赖。`npm run build` 生成 monofile 并同步色板表；`npm test` 做冒烟校验。
 
 ### 主题目录
 
-把需要的 `.css` 复制到 Typora 的主题目录：
+把需要的 `.css` **和** 同级 `kraft-paper/` 目录一起复制到 Typora 的主题目录。只拷 css 时 `@font-face` 会静默回退系统字族，不会白屏或报错：
 
 | 平台 | 路径 |
 | --- | --- |
@@ -112,21 +113,21 @@
 
 | 用途 | 栈 |
 | --- | --- |
-| 正文 `--font-body` | Tiempos Text → Source Serif 4 → Georgia → 宋体 / 思源宋体 / Noto Serif CJK |
-| 界面 `--font-ui` | Styrene B → IBM Plex Sans → Segoe UI → 苹方 / 微软雅黑 等 |
-| 强调 `--font-strong` | 拉丁走衬线粗体；中文落到黑体（避免宋体伪粗发糊） |
-| 等宽 `--font-mono` | ui-monospace → Cascadia Code → Consolas → SF Mono → 更纱黑体 Mono SC |
+| 正文 `--font-body` | Noto Serif SC → Georgia → Times New Roman → Songti SC → Source Han Serif SC → serif |
+| 界面 `--font-ui` | Styrene B → IBM Plex Sans → Segoe UI → 苹方 / 微软雅黑（不挂 Noto） |
+| 强调 `--font-strong` | unicode-range 强调分族：拉丁 Noto 700；CJK 本地雅黑 / 苹方 |
+| 等宽 `--font-mono` | ui-monospace → Cascadia Code → Consolas → 微软雅黑 |
 
 说明：
 
-- 品牌字体（Tiempos、Styrene 等）为**可选项**，本仓库不附带或分发字体文件；未安装时自动回落到系统字体
-- 界面栈把**拉丁字体放在 CJK 前面**，避免中文字体自带拉丁字形抢占英文渲染
-- 导出 HTML 时，主题通过 `@include-when-export` 可加载 `Source Serif 4` 与 `IBM Plex Sans`（仅导出链路；日常编辑不依赖网络）
-- Windows 建议安装**思源宋体**，中文衬线观感更稳
+- 正文使用仓库内 `kraft-paper/` 的 Noto Serif SC（SIL OFL）；**不打包** Tiempos / Source Serif 4 / 文楷 / Sarasa
+- 安装时必须同时复制 css 与 `kraft-paper/`。只拷 css 时静默回退 Georgia / 宋体等系统栈，不崩溃
+- 界面栈把**拉丁字体放在 CJK 前面**，避免中文字体自带拉丁字形抢占英文渲染；`--font-ui` 不挂 Noto
+- 导出 HTML / PDF **不请求** Google Fonts 或任何 http(s) 字体
 
 ### 版式
 
-- 正文列宽 **768px** 居中，行高 **1.62**；窄窗（≤768px）收紧内边距
+- 正文列宽 **768px** 居中，行高 **1.7**、段距 **0.95em**；窄窗（≤768px）收紧内边距
 - 结构约定：`body` 只承载界面字体；一切内容排版规则限定在 `#write`
 - 文档首个 h1 / h2 顶距收窄，避免文首大块空白
 - 长 URL / 长行内代码 `overflow-wrap: break-word`，不撑破栏宽
@@ -199,7 +200,7 @@
 - `@media print`：正文字号收至 13px；表格 / 代码 / 引用 / 图片避免跨页截断；标题后不孤立分页
 - 打印色保留（`print-color-adjust: exact`），行内代码与高亮在纸面上仍可辨
 - **深色主题**在打印 / 导出 PDF 时**自动切回亮色纸面**，避免深底白字直接上纸
-- 导出 HTML 时可按需加载网络字体；日常编辑不依赖在线资源
+- 导出 HTML / PDF 不加载网络字体；编辑与导出都走自托管 Noto
 
 ---
 
@@ -245,10 +246,10 @@ README 结构参考了 [Clay](https://github.com/chaun-yi7/Clay) 的组织方式
 
 ## License
 
-[MIT](./LICENSE)
+[MIT](./LICENSE)（主题 CSS 与构建脚本）。自托管 **Noto Serif SC** 为 [SIL Open Font License 1.1](./kraft-paper/OFL.txt)，与主题 MIT **分开声明**。
 
 本主题在视觉上参考了 [claude.ai](https://claude.ai) 的公开设计语言（配色 / 版式），与 Anthropic 无隶属或背书关系。“Claude” 为 Anthropic 的商标，此处仅作事实性引用。
 
 ---
 
-*主题文件：`kraft-paper.css` 与 `kraft-paper-dark.css`（放入 Typora 主题目录） · Typora ≥ 1.5 · 主要验证环境 Windows 11*
+*主题文件：`kraft-paper.css`、`kraft-paper-dark.css` 与 `kraft-paper/`（一起放入 Typora 主题目录） · Typora ≥ 1.5 · 主要验证环境 Windows 11*
