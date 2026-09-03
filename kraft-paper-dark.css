@@ -83,20 +83,13 @@
     --scrollbar-thumb-hover-color: rgba(232, 230, 222, 0.26);
 
     /* ---- 字体 (与亮色同值) ---- */
-    --font-body:
-        "Noto Serif SC", Georgia, "Times New Roman",
-        "Songti SC", "Source Han Serif SC", serif;
-    --font-ui:
-        "Styrene B LC", "Styrene B", "IBM Plex Sans", -apple-system, "Segoe UI",
-        "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC",
-        "Microsoft YaHei", sans-serif;
-    --font-strong:
-        "Kraft Paper Strong", Georgia, "Times New Roman", "Microsoft YaHei", sans-serif;
-    --font-mono:
-        ui-monospace, "Cascadia Code", Consolas, "Microsoft YaHei", monospace;
+    --font-body: "Noto Serif SC", serif;
+    --font-ui: system-ui, "Microsoft YaHei", sans-serif;
+    --font-strong: "Kraft Paper Strong", system-ui, "Microsoft YaHei", sans-serif;
+    --font-mono: Consolas, "Microsoft YaHei", monospace;
 }
 
-/* 自托管 Noto Serif SC (与 css 同级 kraft-paper/); 缺目录时浏览器静默回退系统栈 */
+/* 自托管 Noto Serif SC；安装主题时必须同时复制同级 kraft-paper/ 目录 */
 @font-face {
     font-family: "Noto Serif SC";
     src: url("kraft-paper/NotoSerifSC-Regular.woff2") format("woff2");
@@ -113,7 +106,7 @@
     font-display: swap;
 }
 
-/* 强调分族: 拉丁 Noto 700, CJK 本地雅黑/苹方. 禁止 strong 整段换微软雅黑 */
+/* 强调分族：拉丁使用 Noto 700，CJK 由 --font-strong 落到系统黑体 */
 @font-face {
     font-family: "Kraft Paper Strong";
     src: url("kraft-paper/NotoSerifSC-Bold.woff2") format("woff2");
@@ -121,15 +114,6 @@
     font-style: normal;
     font-display: swap;
     unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-
-@font-face {
-    font-family: "Kraft Paper Strong";
-    src: local("Microsoft YaHei Bold"), local("Microsoft YaHei UI Bold"), local("微软雅黑 Bold"), local("PingFangSC-Medium"), local("PingFangSC-Semibold"), local("PingFang SC Medium"), local("Hiragino Sans GB W6"), local("Microsoft YaHei"), local("Microsoft YaHei UI"), local("微软雅黑"), local("PingFang SC"), local("PingFangSC-Regular"), local("Hiragino Sans GB");
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-    unicode-range: U+2E80-2FFF, U+3000-303F, U+31C0-31EF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF, U+20000-2FA1F;
 }
 
 /* ============================================================
@@ -314,7 +298,7 @@ body {
 
 /* ============================================================
  * 强调
- * 强调分族: unicode-range 拆 @font-face (拉丁 Noto 700 / CJK 本地雅黑苹方);
+ * 强调分族: unicode-range 限定拉丁 Noto 700，CJK 落到系统黑体;
  * 禁止 strong/b 整段 font-family: 微软雅黑。标题仍走正文字族衬线。
  * ============================================================ */
 

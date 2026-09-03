@@ -69,15 +69,8 @@
     --scrollbar-thumb-hover-color: rgba(232, 230, 222, 0.26);
 
     /* ---- 字体 (与亮色同值) ---- */
-    --font-body:
-        "Noto Serif SC", Georgia, "Times New Roman",
-        "Songti SC", "Source Han Serif SC", serif;
-    --font-ui:
-        "Styrene B LC", "Styrene B", "IBM Plex Sans", -apple-system, "Segoe UI",
-        "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC",
-        "Microsoft YaHei", sans-serif;
-    --font-strong:
-        "Kraft Paper Strong", Georgia, "Times New Roman", "Microsoft YaHei", sans-serif;
-    --font-mono:
-        ui-monospace, "Cascadia Code", Consolas, "Microsoft YaHei", monospace;
+    --font-body: "Noto Serif SC", serif;
+    --font-ui: system-ui, "Microsoft YaHei", sans-serif;
+    --font-strong: "Kraft Paper Strong", system-ui, "Microsoft YaHei", sans-serif;
+    --font-mono: Consolas, "Microsoft YaHei", monospace;
 }

@@ -8,12 +8,10 @@
 
 ### Download
 
-|                             | 下载                                                                                                  |
-| --------------------------- | ----------------------------------------------------------------------------------------------------- |
-| **Latest Release**          | [打开发布页](https://github.com/jasper0507/kraft-paper/releases/latest)                               |
-| **一键包**（浅色 + 暗色）   | [下载 ZIP](https://github.com/jasper0507/kraft-paper/releases/latest/download/kraft-paper-v2.1.0.zip) |
-| 浅色 `kraft-paper.css`      | [直接下载](https://github.com/jasper0507/kraft-paper/releases/latest/download/kraft-paper.css)        |
-| 深色 `kraft-paper-dark.css` | [直接下载](https://github.com/jasper0507/kraft-paper/releases/latest/download/kraft-paper-dark.css)   |
+|                           | 下载                                                                                                  |
+| ------------------------- | ----------------------------------------------------------------------------------------------------- |
+| **Latest Release**        | [打开发布页](https://github.com/jasper0507/kraft-paper/releases/latest)                               |
+| **一键包**（明暗 + 字体） | [下载 ZIP](https://github.com/jasper0507/kraft-paper/releases/latest/download/kraft-paper-v2.1.0.zip) |
 
 > 下载后复制到 Typora 主题文件夹，重启并在主题菜单中选择对应名称。详细步骤见下方 [安装](#一安装)。
 
@@ -21,7 +19,7 @@
 
 一对以 **claude.ai 界面设计语言**为蓝本的 Typora 主题：暖米色纸感的浅色 `kraft-paper`，与暖灰深底的深色 `kraft-paper-dark`。配色对齐官网暖纸体系（陶土橙 + 暖灰中性色），排版为**正文衬线 + 界面无衬线**；正文中英走自托管 Noto Serif SC，强调分族（拉丁 Noto 700 / 中文本地雅黑）。
 
-**源码**在 `src/`（tokens + 共享 structure + 暗色 host adapter）；**交付**仍是两个自包含 monofile（Typora 要求）。改样式请编辑 `src/` 后执行 `npm run build`。
+**源码**在 `src/`（tokens + 共享 structure + 暗色 host adapter）；**交付**是两个 Typora monofile 与同级字体目录。改样式请编辑 `src/` 后执行 `npm run build`。
 
 - 适配环境：**Typora ≥ 1.5**（建议较新版本）；主要在 **Windows 11** 上验证
 - 正文栏宽固定 **768px**（约 48rem，对齐 claude.ai 聊天栏 measure），不随大屏无限加宽
@@ -50,8 +48,8 @@
 
 | 文件                   | 说明                                                          |
 | ---------------------- | ------------------------------------------------------------- |
-| `kraft-paper.css`      | 浅色主题 monofile（构建产物，可直接安装）                     |
-| `kraft-paper-dark.css` | 深色主题 monofile（构建产物，含暗色专属规则）                 |
+| `kraft-paper.css`      | 浅色主题 monofile（构建产物，需搭配字体目录）                 |
+| `kraft-paper-dark.css` | 深色主题 monofile（构建产物，需搭配字体目录）                 |
 | `src/tokens/`          | 明 / 暗色板（真源）                                           |
 | `src/structure.css`    | 共享排版与 chrome（仅 `var(...)`）                            |
 | `src/dark-only.css`    | 暗色专用（滚动条、源码模式）                                  |
@@ -61,7 +59,7 @@
 
 ### 主题目录
 
-把需要的 `.css` **和** 同级 `kraft-paper/` 目录一起复制到 Typora 的主题目录。只拷 css 时 `@font-face` 会静默回退系统字族，不会白屏或报错：
+把需要的 `.css` **和** 同级 `kraft-paper/` 目录一起复制到 Typora 的主题目录；字体目录是主题的必装组成部分：
 
 | 平台    | 路径                                                      |
 | ------- | --------------------------------------------------------- |
@@ -92,39 +90,37 @@
 核心原则：陶土橙做链接、光标、勾选、焦点与侧栏激活等**强调交互**；正文 / 标题走独立暖色文本阶，边线统一暖灰，避免中性灰在米色纸面上发脏。
 
 <!-- palette:start -->
-
-| 角色                           | 浅色      | 深色      |
-| ------------------------------ | --------- | --------- |
-| 页面底色                       | `#faf9f5` | `#262624` |
-| 侧栏底                         | `#f0eee6` | `#201F1C` |
-| 正文                           | `#2b2621` | `#E8E6DE` |
-| 标题                           | `#1c1815` | `#F5F3EC` |
-| 次级文本                       | `#72695e` | `#A29A8D` |
-| 强调色 `--accent-color`        | `#c15f3c` | `#D97757` |
-| 强调悬停                       | `#a14d2e` | `#E69373` |
+| 角色 | 浅色 | 深色 |
+| --- | --- | --- |
+| 页面底色 | `#faf9f5` | `#262624` |
+| 侧栏底 | `#f0eee6` | `#201F1C` |
+| 正文 | `#2b2621` | `#E8E6DE` |
+| 标题 | `#1c1815` | `#F5F3EC` |
+| 次级文本 | `#72695e` | `#A29A8D` |
+| 强调色 `--accent-color` | `#c15f3c` | `#D97757` |
+| 强调悬停 | `#a14d2e` | `#E69373` |
 | 强调上前景 `--on-accent-color` | `#faf9f5` | `#262624` |
-| 边线                           | `#ddd5ca` | `#3E3B36` |
-| 高亮 `==mark==`                | `#f2e3c2` | `#5C4726` |
-| 行内代码字色                   | `#a34a3a` | `#E39A82` |
-
+| 边线 | `#ddd5ca` | `#3E3B36` |
+| 高亮 `==mark==` | `#f2e3c2` | `#5C4726` |
+| 行内代码字色 | `#a34a3a` | `#E39A82` |
 <!-- palette:end -->
 
 > 色板表由 `npm run build` 从 `src/tokens/` 同步；请勿手改表内 hex。
 
 ### 字体栈
 
-| 用途                 | 栈                                                                                  |
-| -------------------- | ----------------------------------------------------------------------------------- |
-| 正文 `--font-body`   | Noto Serif SC → Georgia → Times New Roman → Songti SC → Source Han Serif SC → serif |
-| 界面 `--font-ui`     | Styrene B → IBM Plex Sans → Segoe UI → 苹方 / 微软雅黑（不挂 Noto）                 |
-| 强调 `--font-strong` | unicode-range 强调分族：拉丁 Noto 700；CJK 本地雅黑 / 苹方                          |
-| 等宽 `--font-mono`   | ui-monospace → Cascadia Code → Consolas → 微软雅黑                                  |
+| 用途                 | 栈                                                          |
+| -------------------- | ----------------------------------------------------------- |
+| 正文 `--font-body`   | Noto Serif SC → serif                                       |
+| 界面 `--font-ui`     | system-ui → 微软雅黑 → sans-serif                            |
+| 强调 `--font-strong` | 拉丁 Noto 700；CJK system-ui → 微软雅黑 → sans-serif         |
+| 等宽 `--font-mono`   | Consolas → 微软雅黑 → monospace                              |
 
 说明：
 
-- 正文使用仓库内 `kraft-paper/` 的 Noto Serif SC（SIL OFL）；**不打包** Tiempos / Source Serif 4 / 文楷 / Sarasa
-- 安装时必须同时复制 css 与 `kraft-paper/`。只拷 css 时静默回退 Georgia / 宋体等系统栈，不崩溃
-- 界面栈把**拉丁字体放在 CJK 前面**，避免中文字体自带拉丁字形抢占英文渲染；`--font-ui` 不挂 Noto
+- 正文使用仓库内 `kraft-paper/` 的 Noto Serif SC（SIL OFL）；安装时必须同时复制 css 与 `kraft-paper/`
+- Consolas 与微软雅黑由 Windows 提供，不随主题分发；非 Windows 平台使用系统 generic fallback
+- 强调通过 `unicode-range` 让拉丁使用 Noto 700，CJK 落到系统 UI 黑体
 - 导出 HTML / PDF **不请求** Google Fonts 或任何 http(s) 字体
 
 ### 版式

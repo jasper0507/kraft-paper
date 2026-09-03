@@ -66,15 +66,8 @@
     --checkbox-check-image: url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 12 12%27%3E%3Cpath fill=%27none%27 stroke=%27%23faf9f5%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 d=%27M2.5 6.2 5 8.5 9.5 3.5%27/%3E%3C/svg%3E");
 
     /* ---- 字体 ---- */
-    --font-body:
-        "Noto Serif SC", Georgia, "Times New Roman",
-        "Songti SC", "Source Han Serif SC", serif;
-    --font-ui:
-        "Styrene B LC", "Styrene B", "IBM Plex Sans", -apple-system, "Segoe UI",
-        "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC",
-        "Microsoft YaHei", sans-serif;
-    --font-strong:
-        "Kraft Paper Strong", Georgia, "Times New Roman", "Microsoft YaHei", sans-serif;
-    --font-mono:
-        ui-monospace, "Cascadia Code", Consolas, "Microsoft YaHei", monospace;
+    --font-body: "Noto Serif SC", serif;
+    --font-ui: system-ui, "Microsoft YaHei", sans-serif;
+    --font-strong: "Kraft Paper Strong", system-ui, "Microsoft YaHei", sans-serif;
+    --font-mono: Consolas, "Microsoft YaHei", monospace;
 }
