@@ -8,12 +8,12 @@
 
 ### Download
 
-| | 下载 |
-| --- | --- |
-| **Latest Release** | [打开发布页](https://github.com/jasper0507/kraft-paper/releases/latest) |
-| **一键包**（浅色 + 暗色） | [下载 ZIP](https://github.com/jasper0507/kraft-paper/releases/latest/download/kraft-paper-v2.1.0.zip) |
-| 浅色 `kraft-paper.css` | [直接下载](https://github.com/jasper0507/kraft-paper/releases/latest/download/kraft-paper.css) |
-| 深色 `kraft-paper-dark.css` | [直接下载](https://github.com/jasper0507/kraft-paper/releases/latest/download/kraft-paper-dark.css) |
+|                             | 下载                                                                                                  |
+| --------------------------- | ----------------------------------------------------------------------------------------------------- |
+| **Latest Release**          | [打开发布页](https://github.com/jasper0507/kraft-paper/releases/latest)                               |
+| **一键包**（浅色 + 暗色）   | [下载 ZIP](https://github.com/jasper0507/kraft-paper/releases/latest/download/kraft-paper-v2.1.0.zip) |
+| 浅色 `kraft-paper.css`      | [直接下载](https://github.com/jasper0507/kraft-paper/releases/latest/download/kraft-paper.css)        |
+| 深色 `kraft-paper-dark.css` | [直接下载](https://github.com/jasper0507/kraft-paper/releases/latest/download/kraft-paper-dark.css)   |
 
 > 下载后复制到 Typora 主题文件夹，重启并在主题菜单中选择对应名称。详细步骤见下方 [安装](#一安装)。
 
@@ -48,14 +48,14 @@
 
 ### 文件构成
 
-| 文件 | 说明 |
-| --- | --- |
-| `kraft-paper.css` | 浅色主题 monofile（构建产物，可直接安装） |
-| `kraft-paper-dark.css` | 深色主题 monofile（构建产物，含暗色专属规则） |
-| `src/tokens/` | 明 / 暗色板（真源） |
-| `src/structure.css` | 共享排版与 chrome（仅 `var(...)`） |
-| `src/dark-only.css` | 暗色专用（滚动条、源码模式） |
-| `kraft-paper/` | 自托管 Noto Serif SC 400/700 woff2 + `OFL.txt`（与 css 同级） |
+| 文件                   | 说明                                                          |
+| ---------------------- | ------------------------------------------------------------- |
+| `kraft-paper.css`      | 浅色主题 monofile（构建产物，可直接安装）                     |
+| `kraft-paper-dark.css` | 深色主题 monofile（构建产物，含暗色专属规则）                 |
+| `src/tokens/`          | 明 / 暗色板（真源）                                           |
+| `src/structure.css`    | 共享排版与 chrome（仅 `var(...)`）                            |
+| `src/dark-only.css`    | 暗色专用（滚动条、源码模式）                                  |
+| `kraft-paper/`         | 自托管 Noto Serif SC 400/700 woff2 + `OFL.txt`（与 css 同级） |
 
 开发者：无运行时依赖。`npm run build` 生成 monofile 并同步色板表；`npm test` 做冒烟校验。
 
@@ -63,11 +63,11 @@
 
 把需要的 `.css` **和** 同级 `kraft-paper/` 目录一起复制到 Typora 的主题目录。只拷 css 时 `@font-face` 会静默回退系统字族，不会白屏或报错：
 
-| 平台 | 路径 |
-| --- | --- |
-| Windows | `%APPDATA%\Typora\themes\` |
-| macOS | `~/Library/Application Support/abnerworks.Typora/themes/` |
-| Linux | `~/.config/Typora/themes/` |
+| 平台    | 路径                                                      |
+| ------- | --------------------------------------------------------- |
+| Windows | `%APPDATA%\Typora\themes\`                                |
+| macOS   | `~/Library/Application Support/abnerworks.Typora/themes/` |
+| Linux   | `~/.config/Typora/themes/`                                |
 
 > 在 Typora → 文件 → 偏好设置 → 外观 → **打开主题文件夹**，可直接跳到该目录。
 
@@ -92,31 +92,33 @@
 核心原则：陶土橙做链接、光标、勾选、焦点与侧栏激活等**强调交互**；正文 / 标题走独立暖色文本阶，边线统一暖灰，避免中性灰在米色纸面上发脏。
 
 <!-- palette:start -->
-| 角色 | 浅色 | 深色 |
-| --- | --- | --- |
-| 页面底色 | `#faf9f5` | `#262624` |
-| 侧栏底 | `#f0eee6` | `#201F1C` |
-| 正文 | `#2b2621` | `#E8E6DE` |
-| 标题 | `#1c1815` | `#F5F3EC` |
-| 次级文本 | `#72695e` | `#A29A8D` |
-| 强调色 `--accent-color` | `#c15f3c` | `#D97757` |
-| 强调悬停 | `#a14d2e` | `#E69373` |
+
+| 角色                           | 浅色      | 深色      |
+| ------------------------------ | --------- | --------- |
+| 页面底色                       | `#faf9f5` | `#262624` |
+| 侧栏底                         | `#f0eee6` | `#201F1C` |
+| 正文                           | `#2b2621` | `#E8E6DE` |
+| 标题                           | `#1c1815` | `#F5F3EC` |
+| 次级文本                       | `#72695e` | `#A29A8D` |
+| 强调色 `--accent-color`        | `#c15f3c` | `#D97757` |
+| 强调悬停                       | `#a14d2e` | `#E69373` |
 | 强调上前景 `--on-accent-color` | `#faf9f5` | `#262624` |
-| 边线 | `#ddd5ca` | `#3E3B36` |
-| 高亮 `==mark==` | `#f2e3c2` | `#5C4726` |
-| 行内代码字色 | `#a34a3a` | `#E39A82` |
+| 边线                           | `#ddd5ca` | `#3E3B36` |
+| 高亮 `==mark==`                | `#f2e3c2` | `#5C4726` |
+| 行内代码字色                   | `#a34a3a` | `#E39A82` |
+
 <!-- palette:end -->
 
 > 色板表由 `npm run build` 从 `src/tokens/` 同步；请勿手改表内 hex。
 
 ### 字体栈
 
-| 用途 | 栈 |
-| --- | --- |
-| 正文 `--font-body` | Noto Serif SC → Georgia → Times New Roman → Songti SC → Source Han Serif SC → serif |
-| 界面 `--font-ui` | Styrene B → IBM Plex Sans → Segoe UI → 苹方 / 微软雅黑（不挂 Noto） |
-| 强调 `--font-strong` | unicode-range 强调分族：拉丁 Noto 700；CJK 本地雅黑 / 苹方 |
-| 等宽 `--font-mono` | ui-monospace → Cascadia Code → Consolas → 微软雅黑 |
+| 用途                 | 栈                                                                                  |
+| -------------------- | ----------------------------------------------------------------------------------- |
+| 正文 `--font-body`   | Noto Serif SC → Georgia → Times New Roman → Songti SC → Source Han Serif SC → serif |
+| 界面 `--font-ui`     | Styrene B → IBM Plex Sans → Segoe UI → 苹方 / 微软雅黑（不挂 Noto）                 |
+| 强调 `--font-strong` | unicode-range 强调分族：拉丁 Noto 700；CJK 本地雅黑 / 苹方                          |
+| 等宽 `--font-mono`   | ui-monospace → Cascadia Code → Consolas → 微软雅黑                                  |
 
 说明：
 
@@ -206,50 +208,16 @@
 
 ## 六、自定义入口
 
-| 想改什么 | 动哪里 |
-| --- | --- |
-| 换强调色 | `src/tokens/*`：`--accent-color` / `--accent-hover-color` / `--focus-ring-color` / `--on-accent-color` |
-| 阴影 / 勾选对勾 | `--shadow-*` / `--checkbox-check-image` |
-| 换字体 | `--font-body` / `--font-ui` / `--font-strong` / `--font-mono` |
-| 列宽 | `src/structure.css` → `#write { max-width }`（默认 768px） |
-| 代码高亮 | `--code-keyword/string/number/symbol/muted-color` |
-| 表格 / 引用 | `--table-*` / `--quote-*` |
-| 侧栏激活 | `--active-file-bg/border/text-color` |
-| 高亮底 | `--mark-bg-color` |
-| 暗色滚动条 / 源码 token | `src/dark-only.css` |
+| 想改什么                | 动哪里                                                                                                 |
+| ----------------------- | ------------------------------------------------------------------------------------------------------ |
+| 换强调色                | `src/tokens/*`：`--accent-color` / `--accent-hover-color` / `--focus-ring-color` / `--on-accent-color` |
+| 阴影 / 勾选对勾         | `--shadow-*` / `--checkbox-check-image`                                                                |
+| 换字体                  | `--font-body` / `--font-ui` / `--font-strong` / `--font-mono`                                          |
+| 列宽                    | `src/structure.css` → `#write { max-width }`（默认 768px）                                             |
+| 代码高亮                | `--code-keyword/string/number/symbol/muted-color`                                                      |
+| 表格 / 引用             | `--table-*` / `--quote-*`                                                                              |
+| 侧栏激活                | `--active-file-bg/border/text-color`                                                                   |
+| 高亮底                  | `--mark-bg-color`                                                                                      |
+| 暗色滚动条 / 源码 token | `src/dark-only.css`                                                                                    |
 
 改完后：`npm run build`，再把 monofile 拷进 Typora 主题目录。终端用户若只装 monofile，仍可直接改构建产物里的 `:root`（下次 build 会覆盖）。
-
----
-
-## 七、自检建议
-
-用 [`examples/showcase.md`](examples/showcase.md) 按文内清单回归；或任意含标题 / 列表 / 任务列表 / 表格 / 代码块 / 引用 / 高亮 / 脚注的长文，在明暗两主题下对照：
-
-1. 正文衬线与粗体强调是否分层清晰（中文粗体不发糊）
-2. 表格边线层级、行悬停；编辑浮层（九宫格）**不被**内容表样式拉通栏
-3. 任务列表勾选对比度（对勾走 `--on-accent-color`）、完成态删除线
-4. 深色下源码模式 token 是否可读
-5. 深色打印 / 导出 PDF 是否回到亮色纸面
-6. Windows 下侧栏图标、megamenu 是否被字族污染
-7. 开发者：`npm test`；改源码后 `npm run build`
-
----
-
-## 八、致谢
-
-本项目基于 Muyiiiii 的 [Typora Claude-Like Theme](https://github.com/Muyiiiii/Typora_Claude-Like_Theme) 修改。感谢原作者以 MIT 许可证开放其工作。
-
-README 结构参考了 [Clay](https://github.com/chaun-yi7/Clay) 的组织方式。
-
----
-
-## License
-
-[MIT](./LICENSE)（主题 CSS 与构建脚本）。自托管 **Noto Serif SC** 为 [SIL Open Font License 1.1](./kraft-paper/OFL.txt)，与主题 MIT **分开声明**。
-
-本主题在视觉上参考了 [claude.ai](https://claude.ai) 的公开设计语言（配色 / 版式），与 Anthropic 无隶属或背书关系。“Claude” 为 Anthropic 的商标，此处仅作事实性引用。
-
----
-
-*主题文件：`kraft-paper.css`、`kraft-paper-dark.css` 与 `kraft-paper/`（一起放入 Typora 主题目录） · Typora ≥ 1.5 · 主要验证环境 Windows 11*
